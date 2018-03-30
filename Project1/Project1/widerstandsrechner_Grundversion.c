@@ -12,6 +12,12 @@ Dieses Programm stellt das Prdukt als vereinbarte Grundversion dar.
 #define VARIANTEN 8
 #define TRENNZEICHEN "-,"
 
+#ifdef UNIX
+#define CLS "clear"
+#else
+#define CLS "cls"
+#endif
+
 #define xstr(x) #x		//eine Konstante x direkt eintragen
 #define str(x) xstr(x)	//use: str(x)  -> result: x
 
@@ -23,6 +29,7 @@ Dieses Programm stellt das Prdukt als vereinbarte Grundversion dar.
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 //End Includes
 
 //Proto
@@ -42,22 +49,34 @@ int main(void)
 {
 	//lokale Datenfelder
 	char inputStr[MAXINPUT + 1] = "";
-	int pruef;
+	int pruef, i;
 	char worte[4][WORTLEN];
 	//End lokale Datenfelder
 
-	while (strcmp(inputStr, "quit") != 0)
+	while (strcmp(inputStr, "-quit") != 0)
 	{
 		//Begruessung und Arbeitsauftrag fuer den Benutzer
-		printf("Gib die bloeden Ringe ein!!\n");
-		
+		printf("- - - Widerstandsrechner - - -\n");
+		printf("Verwendung:\nDie Ringe eines Widerstandes mit \"-\" getrennt eingeben.\n");
+		printf("Zum Beenden \"-quit\" eingeben\n");
+
 		scanf("%" str(MAXINPUT) "[^\n]", inputStr);
 		while (getchar() != '\n');
+		for (i = 0; *(inputStr + i) != '\0'; i++)
+			*(inputStr + i) = tolower(*(inputStr + i));
 		//Aufruf der Subroutinen
 		pruef = inputPruefen(inputStr);
 		if (pruef == 0)
 			aufteilen(inputStr, worte[0], worte[1], worte[2], worte[3]);
 		ausgabe(worte, pruef);
+
+		if (strcmp(inputStr, "-quit") != 0)
+		{
+			printf("Eingabetaste druecken");
+			getchar();
+			while (getchar() != '\n');
+			system(CLS);
+		}
 
 		// T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T 
 		/*for (i = 0; i < 4; i++)
@@ -140,7 +159,7 @@ int farbringe2Ziffer(char *farbwort)
 			// aktuelle zeile feld 0 -> ergebenis
 		}
 	}
-	printf("text\n");				// TODO					Etwas sinnvolles ausgeben
+	printf("Farbe nicht gefunden\n");				// TODO					Etwas sinnvolles ausgeben??
 	return -1;
 }
 
@@ -157,7 +176,7 @@ double farbring2Multi(char *farbwort)
 	double mulArr [12] = { 1, 10, 100, 1000, 10000, 100000, 1000000, -1, -1, -1, 0.1, 0.01 };
 	return mulArr[farbringe2Ziffer(farbwort)];
 }
-double farbring2Tolleranz(char *farbwort)
+
 /*
 Diese Funktion gibt einnen Tolleranzwert für einen Inputstring zurück.
 Der Rückgabewert ist double.
@@ -166,6 +185,7 @@ Das eigentliche Wandeln des Farbwortes geschieht in "int farbringe2Ziffer (..)".
 dependency: int farbringe2Ziffer(char *farbwort);
 *****
 */
+double farbring2Tolleranz(char *farbwort)
 {
 	double TolArr[12] = { -1, 1, 2, -1, -1, -1, -1, -1, -1, -1, 5, 10 };
 	return TolArr[farbringe2Ziffer(farbwort)];
@@ -273,19 +293,27 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 	{
 	case 0:
 		printf("Eingabe korrekt\n\n");
-		zehner = 10 * farbringe2Ziffer(worte[0]);
+		zehner = farbringe2Ziffer(worte[0]);
 		einer = farbringe2Ziffer(worte[1]);
 		mul = farbring2Multi(worte[2]);
 		tol = farbring2Tolleranz(worte[3]);
 		printf("---|  %s  %s  %s    %s      |---\n", worte [0], worte[1], worte[2], worte[3]);
-		printf("Ein Widerstand mit %.1f Ohm", (zehner + einer)*mul);
-		printf (" +/- %.f %%\n\n", tol);
+		if (zehner != -1 && einer != -1 && mul != -1 && tol != -1)
+		{
+			printf("Ein Widerstand mit %.1f Ohm", (zehner *10 + einer)*mul);
+			printf(" +/- %.f %%\n\n", tol);
+		}
+		else
+		{
+			printf("Mindestens eine der eingegebenen Farben existiert (in dieser Kombination) nicht.\n");
+			printf("korrektes Eingabebeispiel: \"braun-braun-schwarz-gold\"\n");
+		}
 		break;
 	case 1:
-		printf("Die Eingabe ist Fehlerhaft (zu wenige Trennzeichen)\n");
+		printf("Die Eingabe ist fehlerhaft (zu wenige Trennzeichen)\n");
 		break;
 	case 2:
-		printf("Die Eingabe ist Fehlerhaft (zu viele Trennzeichzen)\n");
+		printf("Die Eingabe ist fehlerhaft (zu viele Trennzeichen)\n");
 		break;
 	default:	
 		printf("schwerer Eingabefehler\n");
