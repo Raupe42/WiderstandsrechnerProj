@@ -72,8 +72,8 @@ int main(void)
 
 		if (strcmp(inputStr, "-quit") != 0)
 		{
-			printf("Eingabetaste druecken");
-			getchar();
+			printf("Eingabetaste druecken\n");
+			//getchar();
 			while (getchar() != '\n');
 			system(CLS);
 		}
@@ -167,6 +167,8 @@ int farbringe2Ziffer(char *farbwort)
 	Diese Funktion gibt einen Multiplikator für einen Inputstring zurück
 	Der Rückgabewert ist double, da es auch die Multiplikatoren 0.1 und 0.01 gibt.
 	Das eigentliche Wandeln des Farbwortes geschieht in "int farbringe2Ziffer (..)".
+Ein Returnwert von -1 zeigt einen unzulässigen Ring an dieser Position.
+Ein Returnwert von -2 zeigt eine nicht definierte Farbeeingabe.
 	*****
 	dependency: int farbringe2Ziffer(char *farbwort);
 	*****
@@ -174,13 +176,18 @@ int farbringe2Ziffer(char *farbwort)
 double farbring2Multi(char *farbwort)
 {
 	double mulArr [12] = { 1, 10, 100, 1000, 10000, 100000, 1000000, -1, -1, -1, 0.1, 0.01 };
-	return mulArr[farbringe2Ziffer(farbwort)];
+	int retVal = farbringe2Ziffer(farbwort);
+	if (retVal != -1)
+		return mulArr[retVal];
+	return -2;
 }
 
 /*
 Diese Funktion gibt einnen Tolleranzwert für einen Inputstring zurück.
 Der Rückgabewert ist double.
 Das eigentliche Wandeln des Farbwortes geschieht in "int farbringe2Ziffer (..)".
+Ein Returnwert von -1 zeigt einen unzulässigen Ring an dieser Position.
+Ein Returnwert von -2 zeigt eine nicht definierte Farbeeingabe.
 *****
 dependency: int farbringe2Ziffer(char *farbwort);
 *****
@@ -188,7 +195,10 @@ dependency: int farbringe2Ziffer(char *farbwort);
 double farbring2Tolleranz(char *farbwort)
 {
 	double TolArr[12] = { -1, 1, 2, -1, -1, -1, -1, -1, -1, -1, 5, 10 };
-	return TolArr[farbringe2Ziffer(farbwort)];
+	int retVal = farbringe2Ziffer(farbwort);
+	if (retVal != -1)
+		return TolArr[retVal];
+	return -2;
 }
 
 /*
@@ -211,7 +221,7 @@ void fuelleVglArr(char vglArr[][VARIANTEN][20])
 	char rt[VARIANTEN][20] = { "2", "rot", "rt", "red", "rd" };
 	char or[VARIANTEN][20] = { "3", "orange", "or", "og" };
 	char ge[VARIANTEN][20] = { "4", "gelb", "ge", "yellow", "ye" };
-	char gn[VARIANTEN][20] = { "5", "grue", "gn", "green" };
+	char gn[VARIANTEN][20] = { "5", "gruen", "gn", "green", "gr\x81n", "grun"};
 	char bl[VARIANTEN][20] = { "6", "blau", "bl", "blue", "bu" };
 	char vi[VARIANTEN][20] = { "7", "violett", "vi", "voilet", "vt", "lila", "vio" };
 	char gr[VARIANTEN][20] = { "8", "grau", "gr", "grey", "gy" };
@@ -284,6 +294,15 @@ int inputPruefen(char * input)
 	return 0;
 }
 
+/*
+	Diese Funktion verwaltet und erzeugt die Ausgaben an den Benutzer
+	inklusieve der Fehlerbeschreibung bei falschen Eingaben
+	*****
+	dependency: int farbringe2Ziffer(char *farbwort);
+				double farbring2Multi(char *farbwort);
+				double farbring2Tolleranz(char *farbwort);
+	*****
+*/
 int ausgabe(char worte[][WORTLEN], int pruefung)
 {
 	int zehner, einer;
@@ -298,13 +317,31 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		mul = farbring2Multi(worte[2]);
 		tol = farbring2Tolleranz(worte[3]);
 		printf("---|  %s  %s  %s    %s      |---\n", worte [0], worte[1], worte[2], worte[3]);
-		if (zehner != -1 && einer != -1 && mul != -1 && tol != -1)
+		if (zehner > -1 && einer > -1 && mul > -1 && tol > -1)
 		{
 			printf("Ein Widerstand mit %.1f Ohm", (zehner *10 + einer)*mul);
 			printf(" +/- %.f %%\n\n", tol);
 		}
 		else
 		{
+			if (einer < 0)
+				printf("%s ist nicht als moegliche Farbe definiert!\n", worte [0]);
+			else if (zehner < 0)
+				printf("%s ist nicht als moegliche Farbe definiert!\n", worte[1]);
+			else if (mul < 0)
+			{
+				if (mul == -1)
+					printf("%s ist an dieser Stelle nicht zulässig",worte[2]);
+				else if (mul == -2)
+					printf ("%s ist nicht als moegliche Farbe definiert!\n", worte[2]);
+			}
+			else if (tol < 0)
+			{
+				if (tol == -1)
+					printf("%s ist als Multiplikator nicht zulässig", worte[3]);
+				else if (tol == -2)
+					printf("%s ist nicht als moegliche Farbe definiert!\n", worte[3]);
+			}
 			printf("Mindestens eine der eingegebenen Farben existiert (in dieser Kombination) nicht.\n");
 			printf("korrektes Eingabebeispiel: \"braun-braun-schwarz-gold\"\n");
 		}

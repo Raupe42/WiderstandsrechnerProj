@@ -18,5 +18,8 @@
     <ClCompile Include="widerstandsrechner_Grundversion.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="widRech_auteilenTest.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
