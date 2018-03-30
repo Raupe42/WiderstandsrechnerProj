@@ -34,34 +34,55 @@ double farbring2Tolleranz(char *farbwort);
 //Zusaetzliche Funktionen
 void fuelleVglArr(char vglArr[][VARIANTEN][20]);
 void cpyArrOfStr(char dest[][20], char source[][20]);
+int inputPruefen(char * input);
+int ausgabe(char worte[][WORTLEN], int pruefung);
 //End Proto
 
 int main(void)
 {
 	//lokale Datenfelder
-	char inputStr[MAXINPUT + 1];
-	int i;
+	char inputStr[MAXINPUT + 1] = "";
+	int pruef;
 	char worte[4][WORTLEN];
 	//End lokale Datenfelder
 
-	//Begruessung und Arbeitsauftrag fuer den Benutzer
-	printf("Gib die bloeden Ringe ein!!!\n");
-
-	scanf("%" str(MAXINPUT) "[^\n]", inputStr);
-	//Aufruf der Subroutinen
-	aufteilen(inputStr, worte[0], worte[1], worte[2], worte[3]);
-
-	// T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T 
-	for (i = 0; i < 4; i++)
+	while (strcmp(inputStr, "quit") != 0)
 	{
-		printf("%s: ", worte[i]);
-		//farbringe2Ziffer(worte[i]);
-		//printf("%i", ret);
-		printf("%i\n", farbringe2Ziffer(worte[i]));
+		//Begruessung und Arbeitsauftrag fuer den Benutzer
+		printf("Gib die bloeden Ringe ein!!\n");
+		
+		scanf("%" str(MAXINPUT) "[^\n]", inputStr);
+		while (getchar() != '\n');
+		//Aufruf der Subroutinen
+		pruef = inputPruefen(inputStr);
+		if (pruef == 0)
+			aufteilen(inputStr, worte[0], worte[1], worte[2], worte[3]);
+		ausgabe(worte, pruef);
+
+		// T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T 
+		/*for (i = 0; i < 4; i++)
+		{
+			printf("%s: ", worte[i]);
+			//farbringe2Ziffer(worte[i]);
+			//printf("%i", ret);
+			printf("%i\n", farbringe2Ziffer(worte[i]));
+		}
+		printf("%g\n", farbring2Multi(worte[2]));
+		int zehner, einer;
+		double mul, r, tol;
+		zehner = 10 * farbringe2Ziffer(worte[0]);
+		einer = farbringe2Ziffer(worte[1]);
+		mul = farbring2Multi(worte[2]);
+		tol = farbring2Tolleranz(worte[3]);
+		printf("Der eingegebene Widerstand hat: ");
+		//printf("%d Ohm ", ((10 * farbringe2Ziffer(worte[0]) + farbringe2Ziffer(worte[1]))* farbring2Multi(worte[2])));
+		printf("%f ", ((zehner + einer)* mul));
+		//printf("+/- %i%", farbring2Tolleranz (worte[3]));
+		printf("+/- %f \%", tol);
+		//Ausgabe an den Benutzer
+		*/
+		// T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T 
 	}
-	printf("%g\n", farbring2Multi(worte[3]));
-	//Ausgabe an den Benutzer
-	// T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T 
 }	//Hier wird in VS ein Breakpoint beoetigt
 
 /*
@@ -227,19 +248,46 @@ int inputPruefen(char * input)
 	char * trennz = TRENNZEICHEN;
 	while (*(input + i) != '\0')
 	{
-		while (*(TRENNZEICHEN + k) != '\0')
+		while (*(trennz + k) != '\0')
 		{
-			if (*(input + i) == *(TRENNZEICHEN + k))
+			if (*(input + i) == *(trennz + k))
 				l++;
 			k++;
 		}
+		k = 0;
 		i++;
 	}
-	if (l < wortmenge)
+	if (l < wortmenge-1)	//n(trennz.) = wortmenge -1
 		return 1;
-	if (l > wortmenge)
+	if (l > wortmenge-1)
 		return 2;
+	return 0;
+}
 
-
-
+int ausgabe(char worte[][WORTLEN], int pruefung)
+{
+	int zehner, einer;
+	double mul, r, tol;
+	
+	switch (pruefung)
+	{
+	case 0:
+		printf("Eingabe korrekt\n\n");
+		zehner = 10 * farbringe2Ziffer(worte[0]);
+		einer = farbringe2Ziffer(worte[1]);
+		mul = farbring2Multi(worte[2]);
+		tol = farbring2Tolleranz(worte[3]);
+		printf("---|  %s  %s  %s    %s      |---\n", worte [0], worte[1], worte[2], worte[3]);
+		printf("Ein Widerstand mit %.1f Ohm", (zehner + einer)*mul);
+		printf (" +/- %.f %%\n\n", tol);
+		break;
+	case 1:
+		printf("Die Eingabe ist Fehlerhaft (zu wenige Trennzeichen)\n");
+		break;
+	case 2:
+		printf("Die Eingabe ist Fehlerhaft (zu viele Trennzeichzen)\n");
+		break;
+	default:	
+		printf("schwerer Eingabefehler\n");
+	}
 }
