@@ -1,4 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: Das Zwischenverzeichnis (Debug\) enthält freigegebene Dateien aus einem anderen Projekt (Project1.vcxproj). Dies kann zu einem falschen Bereinigungs- und Neuerstellungsverhalten führen.
   widerstandsrechner_Grundversion.c
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\project1\widerstandsrechner_grundversion.c(63): warning C6031: Rückgabewert wird ignoriert: "scanf".
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\project1\widerstandsrechner_grundversion.c(56): warning C6001: Nicht initialisierter Speicher "inputStr" wird verwendet.
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\project1\widerstandsrechner_grundversion.c(311): warning C4101: "r": Unreferenzierte lokale Variable
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\project1\widerstandsrechner_grundversion.c(360): warning C4716: "ausgabe": Muss einen Wert zurückgeben
+  Project1.vcxproj -> C:\Users\jensh\OneDrive\Dokumente\Git\WiderstandsrechnerProj\Project1\Debug\Widerstandsrechner.exe

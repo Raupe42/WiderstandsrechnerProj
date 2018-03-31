@@ -1,0 +1,8 @@
+﻿  widerstandsrechner_Grundversion.c
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\project1\widerstandsrechner_grundversion.c(308): warning C4101: "r": Unreferenzierte lokale Variable
+  widRech_auteilenTest.c
+  Code wird generiert...
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\project1\widerstandsrechner_grundversion.c(357): warning C4716: "ausgabe": Muss einen Wert zurückgeben
+widRech_auteilenTest.obj : error LNK2005: aufteilen ist bereits in widerstandsrechner_Grundversion.obj definiert.
+widRech_auteilenTest.obj : error LNK2005: main ist bereits in widerstandsrechner_Grundversion.obj definiert.
+C:\Users\jensh\OneDrive\Dokumente\Git\WiderstandsrechnerProj\Project1\x64\Debug\Widerstandsrechner.exe : fatal error LNK1169: Mindestens ein mehrfach definiertes Symbol gefunden.

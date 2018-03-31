@@ -1,0 +1,4 @@
+﻿  widerstandsrechner_Grundversion.c
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\project1\widerstandsrechner_grundversion.c(308): warning C4101: "r": Unreferenzierte lokale Variable
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\project1\widerstandsrechner_grundversion.c(357): warning C4716: "ausgabe": Muss einen Wert zurückgeben
+  Project1.vcxproj -> C:\Users\jensh\OneDrive\Dokumente\Git\WiderstandsrechnerProj\Project1\test\Widerstandsrechner.exe

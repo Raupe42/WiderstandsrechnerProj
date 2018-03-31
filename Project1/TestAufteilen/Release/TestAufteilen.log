@@ -1,0 +1,8 @@
+﻿  widRech_auteilenTest.c
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\project1\widrech_auteilentest.c(38): warning C4013: "aufteilen" undefiniert; Annahme: extern mit Rückgabetyp int
+  Code wird generiert.
+  2 of 5 functions (40.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Codegenerierung ist abgeschlossen.
+  TestAufteilen.vcxproj -> C:\Users\jensh\OneDrive\Dokumente\Git\WiderstandsrechnerProj\Project1\Release\TestAufteilen.exe

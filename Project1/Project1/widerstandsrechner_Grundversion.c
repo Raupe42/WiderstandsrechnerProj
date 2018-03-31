@@ -50,7 +50,7 @@ int main(void)
 	//lokale Datenfelder
 	char inputStr[MAXINPUT + 1] = "";
 	int pruef, i;
-	char worte[4][WORTLEN];
+	char worte[4][WORTLEN];	//Mit Platz für '\0'
 	//End lokale Datenfelder
 
 	while (strcmp(inputStr, "-quit") != 0)
@@ -104,21 +104,23 @@ int main(void)
 	}
 }	//Hier wird in VS ein Breakpoint beoetigt
 
-/*
+
+	/*
 	Diese Funktion zerteilt den Inputstring zk in vier Bestandteile.
 	Die Trennung erfolgt bei den Trennzeichen, die in der Define-Section definiert sind.
 	Die Ergebnisstrings werdn in form einer InPlace-Substitution an w1 bis w4 übergeben
-*/
+	Diese Funktion geht von einer Korrekten Eingabe (Menge der Trennzeichen) aus, die zuvor sicher gestellt werden muss.
+	*/
 int aufteilen(char *zk, char *w1, char *w2, char *w3, char *w4)
 {
-	//									TODO	String prüfen
-	strcpy(w1, strtok(zk, TRENNZEICHEN));
-	strcpy (w2, strtok(NULL, TRENNZEICHEN));
-	strcpy (w3, strtok(NULL, TRENNZEICHEN));
-	strcpy (w4, strtok(NULL, TRENNZEICHEN));
-
-	//reste Verwerten						TODO
-
+	strncpy(w1, strtok(zk, TRENNZEICHEN), WORTLEN);
+	strncpy(w2, strtok(NULL, TRENNZEICHEN), WORTLEN);
+	strncpy(w3, strtok(NULL, TRENNZEICHEN), WORTLEN);
+	strncpy(w4, strtok(NULL, TRENNZEICHEN), WORTLEN);
+	*(w1 + WORTLEN-1) = '\0';
+	*(w2 + WORTLEN-1) = '\0';
+	*(w3 + WORTLEN-1) = '\0';
+	*(w4 + WORTLEN-1) = '\0';
 	return 0;
 }
 /*
