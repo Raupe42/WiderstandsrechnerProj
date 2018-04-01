@@ -293,6 +293,27 @@ int inputPruefen(char * input)
 		return 1;
 	if (l > wortmenge-1)
 		return 2;
+
+	i = k = l = 0;
+	while (*(input + i) != '\0')	//Den String entlang iterieren
+	{
+		while (*(trennz + k) != '\0')	//Die Trennzerichen durchprobieren für zeichen i
+		{
+			if (*(input + i) == *(trennz + k))
+				while (*(trennz + l) != '\0')	
+				{
+					if (*(trennz + l) == *(input + i + 1) || *(input + i + 1) == '\0')
+						return 3;
+					l++;
+				}
+			l = 0;
+			k++;
+			
+		}
+		k = 0;
+		i++;
+	}
+
 	return 0;
 }
 
@@ -360,6 +381,8 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 	case 2:
 		printf("Die Eingabe ist fehlerhaft (zu viele Trennzeichen)\n");
 		break;
+	case 3:
+		printf("Die Eingabe enthaelt zu wenige Farbringe (ausreichend Trennzeichen)");
 	default:	
 		printf("schwerer Eingabefehler\n");
 	}
