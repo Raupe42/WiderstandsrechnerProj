@@ -1,12 +1,12 @@
 /*
-	author: Tim, Jens
+author: Tim, Jens
 
-	task: Dieses Programm soll die Funktion 
-	int aufteilen (..)
-	testen.
-	Dabei sollen die Funktion und der Umgang mit Fehleingaben geprüft werden.
-	Die Fehleingaben sollen sich dabei an den Bedingungen der Funktion orientieren.
-	Dieses Programm stellt alle zur Funktion benötigten Parameter und Funktionen bereit.
+task: Dieses Programm soll die Funktion
+int aufteilen (..)
+testen.
+Dabei sollen die Funktion und der Umgang mit Fehleingaben geprüft werden.
+Die Fehleingaben solleb sich dabei an den Bedingungen der Funktion orientieren.
+Dieses Programm stellt alle zur Funktion benötigten Parameter und Funktionen bereit.
 */
 
 //Defines
@@ -30,8 +30,8 @@
 int main(void)
 {
 	int i, j;
-	char inputs[INPUTn][MAXINPUT + 1] = {"Eine-Eingabe-mit-Trenner", "Eine-Eingabe-mit-zuLangemWortAmEndeDennEsIstLaengerAlsWortlenErlaubt", "AuchWennDieErsteEingabeZuLangIstAlsoVielZuLang-dann-geht-das", "12345678901234567890123456789012345-10-8-9"};
-	char worte[4][WORTLEN+1];
+	char inputs[INPUTn][MAXINPUT + 1] = { "Eine-Eingabe-mit-Trenner", "Eine-Eingabe-mit-zuLangemWortAmEndeDennEsIstLaengerAlsWortlenErlaubt", "AuchWennDieErsteEingabeZuLangIstAlsoVielZuLang-dann-geht-das", "12345678901234567890123456789012345-10-8-9" };
+	char worte[4][WORTLEN + 1];
 	printf("Testen der Funktion int aufteilen (..)\n");
 	for (i = 0; i < INPUTn; i++)
 	{
@@ -57,7 +57,7 @@ int aufteilen(char *zk, char *w1, char *w2, char *w3, char *w4)
 	strncpy(w2, strtok(NULL, TRENNZEICHEN), WORTLEN);
 	strncpy(w3, strtok(NULL, TRENNZEICHEN), WORTLEN);
 	strncpy(w4, strtok(NULL, TRENNZEICHEN), WORTLEN);
-	*(w1+ WORTLEN) = '\0';
+	*(w1 + WORTLEN) = '\0';
 	*(w2 + WORTLEN) = '\0';
 	*(w3 + WORTLEN) = '\0';
 	*(w4 + WORTLEN) = '\0';

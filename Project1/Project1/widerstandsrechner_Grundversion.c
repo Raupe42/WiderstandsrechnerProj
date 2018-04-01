@@ -223,7 +223,7 @@ void fuelleVglArr(char vglArr[][VARIANTEN][20])
 	char rt[VARIANTEN][20] = { "2", "rot", "rt", "red", "rd" };
 	char or[VARIANTEN][20] = { "3", "orange", "or", "og" };
 	char ge[VARIANTEN][20] = { "4", "gelb", "ge", "yellow", "ye" };
-	char gn[VARIANTEN][20] = { "5", "gruen", "gn", "green", "gr\x81n", "grun"};
+	char gn[VARIANTEN][20] = { "5", "gruen", "gn", "green", "gr\x81n", "gr\x9An", "grun"};
 	char bl[VARIANTEN][20] = { "6", "blau", "bl", "blue", "bu" };
 	char vi[VARIANTEN][20] = { "7", "violett", "vi", "voilet", "vt", "lila", "vio" };
 	char gr[VARIANTEN][20] = { "8", "grau", "gr", "grey", "gy" };
@@ -293,7 +293,7 @@ int inputPruefen(char * input)
 		return 1;
 	if (l > wortmenge-1)
 		return 2;
-
+	/*
 	i = k = l = 0;
 	while (*(input + i) != '\0')	//Den String entlang iterieren
 	{
@@ -313,7 +313,7 @@ int inputPruefen(char * input)
 		k = 0;
 		i++;
 	}
-
+	*/
 	return 0;
 }
 
@@ -353,9 +353,9 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		}
 		else
 		{
-			if (einer < 0)
+			if (zehner < 0)
 				printf("%s ist nicht als moegliche Farbe definiert!\n", worte [0]);
-			else if (zehner < 0)
+			else if (einer < 0)
 				printf("%s ist nicht als moegliche Farbe definiert!\n", worte[1]);
 			else if (mul < 0)
 			{
