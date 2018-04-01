@@ -161,7 +161,7 @@ int farbringe2Ziffer(char *farbwort)
 			// aktuelle zeile feld 0 -> ergebenis
 		}
 	}
-	printf("Farbe nicht gefunden\n");				// TODO					Etwas sinnvolles ausgeben??
+	//printf("Farbe nicht gefunden\n");	
 	return -1;
 }
 
@@ -177,7 +177,7 @@ Ein Returnwert von -2 zeigt eine nicht definierte Farbeeingabe.
 */
 double farbring2Multi(char *farbwort)
 {
-	double mulArr [12] = { 1, 10, 100, 1000, 10000, 100000, 1000000, -1, -1, -1, 0.1, 0.01 };
+	double mulArr [12] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 0.1, 0.01 };
 	int retVal = farbringe2Ziffer(farbwort);
 	if (retVal != -1)
 		return mulArr[retVal];
@@ -196,7 +196,7 @@ dependency: int farbringe2Ziffer(char *farbwort);
 */
 double farbring2Tolleranz(char *farbwort)
 {
-	double TolArr[12] = { -1, 1, 2, -1, -1, -1, -1, -1, -1, -1, 5, 10 };
+	double TolArr[12] = { -1, 1, 2, -1, -1, 0.5, 0.25, 0.1, 0.05, -1, 5, 10 };
 	int retVal = farbringe2Ziffer(farbwort);
 	if (retVal != -1)
 		return TolArr[retVal];
@@ -307,13 +307,13 @@ int inputPruefen(char * input)
 */
 int ausgabe(char worte[][WORTLEN], int pruefung)
 {
-	int zehner, einer;
+	int zehner, einer, exp = 0;
 	double mul, r, tol;
-	
+	char expChar[5] = " kMG";
 	switch (pruefung)
 	{
 	case 0:
-		printf("Eingabe korrekt\n\n");
+		//printf("Eingabe korrekt\n\n");
 		zehner = farbringe2Ziffer(worte[0]);
 		einer = farbringe2Ziffer(worte[1]);
 		mul = farbring2Multi(worte[2]);
@@ -321,7 +321,13 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		printf("---|  %s  %s  %s    %s      |---\n", worte [0], worte[1], worte[2], worte[3]);
 		if (zehner > -1 && einer > -1 && mul > -1 && tol > -1)
 		{
-			printf("Ein Widerstand mit %.1f Ohm", (zehner *10 + einer)*mul);
+			r = (zehner * 10 + einer)*mul;
+			while (r >= 1000)
+			{
+				r = r / 1000;
+				exp++;
+			}
+			printf("Ein Widerstand mit %.1f %cOhm", r, *(expChar+exp));
 			printf(" +/- %.f %%\n\n", tol);
 		}
 		else
