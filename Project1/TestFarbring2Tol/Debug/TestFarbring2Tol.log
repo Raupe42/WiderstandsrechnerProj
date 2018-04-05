@@ -1,0 +1,4 @@
+﻿  TestFarbring2Tolleranz.c
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\testfarbring2tol\testfarbring2tolleranz.c(40): warning C4101: "worte": Unreferenzierte lokale Variable
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\testfarbring2tol\testfarbring2tolleranz.c(83): warning C4013: "farbringe2Ziffer" undefiniert; Annahme: extern mit Rückgabetyp int
+  TestFarbring2Tol.vcxproj -> C:\Users\jensh\OneDrive\Dokumente\Git\WiderstandsrechnerProj\Project1\Debug\TestFarbring2Tol.exe

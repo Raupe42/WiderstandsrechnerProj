@@ -35,7 +35,7 @@ Dieses Programm stellt das Prdukt als vereinbarte Grundversion dar.
 //Proto
 int aufteilen(char *zk, char *w1, char *w2, char *w3, char *w4);
 int farbringe2Ziffer(char *farbwort);
-double farbring2Multi(char *farbwort);
+double farbring2Tolleranz(char *farbwort);
 double farbring2Tolleranz(char *farbwort);
 
 //Zusaetzliche Funktionen
@@ -169,13 +169,13 @@ int farbringe2Ziffer(char *farbwort)
 	Diese Funktion gibt einen Multiplikator für einen Inputstring zurück
 	Der Rückgabewert ist double, da es auch die Multiplikatoren 0.1 und 0.01 gibt.
 	Das eigentliche Wandeln des Farbwortes geschieht in "int farbringe2Ziffer (..)".
-Ein Returnwert von -1 zeigt einen unzulässigen Ring an dieser Position.
-Ein Returnwert von -2 zeigt eine nicht definierte Farbeeingabe.
+	Ein Returnwert von -1 zeigt einen unzulässigen Ring an dieser Position.
+	Ein Returnwert von -2 zeigt eine nicht definierte Farbeeingabe.
 	*****
 	dependency: int farbringe2Ziffer(char *farbwort);
 	*****
 */
-double farbring2Multi(char *farbwort)
+double farbring2Tolleranz(char *farbwort)
 {
 	double mulArr [12] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 0.1, 0.01 };
 	int retVal = farbringe2Ziffer(farbwort);
@@ -293,7 +293,7 @@ int inputPruefen(char * input)
 		return 1;
 	if (l > wortmenge-1)
 		return 2;
-	/*
+	
 	i = k = l = 0;
 	while (*(input + i) != '\0')	//Den String entlang iterieren
 	{
@@ -313,7 +313,7 @@ int inputPruefen(char * input)
 		k = 0;
 		i++;
 	}
-	*/
+	
 	return 0;
 }
 
@@ -337,7 +337,7 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		//printf("Eingabe korrekt\n\n");
 		zehner = farbringe2Ziffer(worte[0]);
 		einer = farbringe2Ziffer(worte[1]);
-		mul = farbring2Multi(worte[2]);
+		mul = farbring2Tolleranz(worte[2]);
 		tol = farbring2Tolleranz(worte[3]);
 		printf("---|  %s  %s  %s    %s      |---\n", worte [0], worte[1], worte[2], worte[3]);
 		if (zehner > -1 && einer > -1 && mul > -1 && tol > -1)
@@ -383,6 +383,7 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		break;
 	case 3:
 		printf("Die Eingabe enthaelt zu wenige Farbringe (ausreichend Trennzeichen)");
+		break;
 	default:	
 		printf("schwerer Eingabefehler\n");
 	}
