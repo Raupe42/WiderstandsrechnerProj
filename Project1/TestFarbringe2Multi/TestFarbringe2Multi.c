@@ -24,7 +24,7 @@ Dieses Programm stellt alle zur Funktion benötigten Parameter und Funktionen ber
 //End Includes
 
 //Proto
-double farbring2Tolleranz(char *farbwort);
+double farbring2Multi (char *farbwort);
 void fuelleVglArr(char vglArr[][VARIANTEN][20]);
 void cpyArrOfStr(char dest[][20], char source[][20]);
 //End Proto
@@ -44,7 +44,7 @@ int main(void)
 		for (j = 0; *(inputs[i] + j) != '\0'; j++)
 			*(inputs[i] + j) = tolower(*(inputs[i] + j));
 		printf("toLower: %s\n", inputs[i]);
-		printf(" out:   %g\n", farbring2Tolleranz(inputs[i]));
+		printf(" out:   %g\n", farbring2Multi(inputs[i]));
 	}
 	printf("\n***\n-quit zum beenden\n***\n");
 	while (strcmp(inputStr, "-quit") != 0)
@@ -55,7 +55,7 @@ int main(void)
 		for (i = 0; *(inputStr + i) != '\0'; i++)
 			*(inputStr + i) = tolower(*(inputStr + i));
 		printf("toLower: %s\n", inputStr);
-		printf(" out:   %g\n", farbring2Tolleranz(inputStr));
+		printf(" out:   %g\n", farbring2Multi(inputStr));
 	}
 
 }
@@ -76,13 +76,13 @@ Ein Returnwert von -2 zeigt eine nicht definierte Farbeeingabe.
 dependency: int farbringe2Ziffer(char *farbwort);
 *****
 */
-double farbring2Tolleranz(char *farbwort)
+double farbring2Multi(char *farbwort)
 {
-	double mulArr[12] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 0.1, 0.01 };
+	double mulArr[12] = { 1.0, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 10000000.0, 100000000.0, 1000000000.0, 0.1, 0.01 };
 	int retVal = farbringe2Ziffer(farbwort);
-	if (retVal != -1)
+	if (retVal != -1.0)
 		return mulArr[retVal];
-	return -2;
+	return -2.0;
 }
 
 //Abhängigkeiten

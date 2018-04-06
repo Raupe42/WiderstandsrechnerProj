@@ -79,11 +79,11 @@ dependency: int farbringe2Ziffer(char *farbwort);
 */
 double farbring2Tolleranz(char *farbwort)
 {
-	double TolArr[12] = { -1, 1, 2, -1, -1, 0.5, 0.25, 0.1, 0.05, -1, 5, 10 };
+	double TolArr[12] = { -1.0, 1.0, 2.0, -1.0, -1.0, 0.5, 0.25, 0.1, 0.05, -1.0, 5.0, 10.0 };
 	int retVal = farbringe2Ziffer(farbwort);
-	if (retVal != -1)
+	if (retVal != -1.0)
 		return TolArr[retVal];
-	return -2;
+	return -2.0;
 }
 //Abhängigkeiten
 /*

@@ -35,7 +35,7 @@ Dieses Programm stellt das Prdukt als vereinbarte Grundversion dar.
 //Proto
 int aufteilen(char *zk, char *w1, char *w2, char *w3, char *w4);
 int farbringe2Ziffer(char *farbwort);
-double farbring2Tolleranz(char *farbwort);
+double farbring2Multi(char *farbwort);
 double farbring2Tolleranz(char *farbwort);
 
 //Zusaetzliche Funktionen
@@ -175,13 +175,13 @@ int farbringe2Ziffer(char *farbwort)
 	dependency: int farbringe2Ziffer(char *farbwort);
 	*****
 */
-double farbring2Tolleranz(char *farbwort)
+double farbring2Multi(char *farbwort)
 {
-	double mulArr [12] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 0.1, 0.01 };
+	double mulArr [12] = { 1.0, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 10000000.0, 100000000.0, 1000000000.0, 0.1, 0.01 };
 	int retVal = farbringe2Ziffer(farbwort);
-	if (retVal != -1)
+	if (retVal != -1.0)
 		return mulArr[retVal];
-	return -2;
+	return -2.0;
 }
 
 /*
@@ -196,11 +196,11 @@ dependency: int farbringe2Ziffer(char *farbwort);
 */
 double farbring2Tolleranz(char *farbwort)
 {
-	double TolArr[12] = { -1, 1, 2, -1, -1, 0.5, 0.25, 0.1, 0.05, -1, 5, 10 };
+	double TolArr[12] = { -1.0, 1.0, 2.0, -1.0, -1.0, 0.5, 0.25, 0.1, 0.05, -1.0, 5.0, 10.0};
 	int retVal = farbringe2Ziffer(farbwort);
-	if (retVal != -1)
+	if (retVal != -1.0)
 		return TolArr[retVal];
-	return -2;
+	return -2.0;
 }
 
 /*
@@ -337,7 +337,7 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		//printf("Eingabe korrekt\n\n");
 		zehner = farbringe2Ziffer(worte[0]);
 		einer = farbringe2Ziffer(worte[1]);
-		mul = farbring2Tolleranz(worte[2]);
+		mul = farbring2Multi(worte[2]);
 		tol = farbring2Tolleranz(worte[3]);
 		printf("---|  %s  %s  %s    %s      |---\n", worte [0], worte[1], worte[2], worte[3]);
 		if (zehner > -1 && einer > -1 && mul > -1 && tol > -1)
