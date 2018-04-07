@@ -340,7 +340,7 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 			else if (mul < 0)
 			{
 				if (mul == -1)
-					printf("%s ist an dieser Stelle nicht zulässig",worte[2]);
+					printf("%s ist an dieser Stelle nicht zulaessig",worte[2]);
 				else if (mul == -2)
 					printf ("%s ist nicht als moegliche Farbe definiert!\n", worte[2]);
 			}

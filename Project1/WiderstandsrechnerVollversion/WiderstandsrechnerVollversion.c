@@ -10,7 +10,14 @@ Das Programm wurde erstellt auf Basis der Grundversion des Commits
 f4065afa2c78b3363072cd485e62e28dac27f17a [f4065af]
 vom 06.04.18
 Die zusätzlichen Features gegenüber der Grundversion sind:
-
+- Verbesserte Arbeitsanweisung
+- Automatische Auflistung der möglichen Trennzeichen
+- "-quit" oder "-q" zum beenden
+- Es kann auch nach erfolgter Ausgabe beendet werden
+  oder etwas neues eingegeben werden. Anschließend muss 
+  ernuet Enter gerückt werden oder die Eingabe kann überschrieben
+  werden.
+- 
 
 
 
@@ -20,7 +27,7 @@ Die zusätzlichen Features gegenüber der Grundversion sind:
 #define MAXINPUT 99
 #define WORTLEN 30
 #define VARIANTEN 8
-#define TRENNZEICHEN "-,"
+#define TRENNZEICHEN "-,/"
 
 #ifdef UNIX
 #define CLS "clear"
@@ -29,7 +36,14 @@ Die zusätzlichen Features gegenüber der Grundversion sind:
 #else
 #define CLS "cls"
 #endif
+/*
+von https://stackoverflow.com/questions/142508/how-do-i-check-os-with-a-preprocessor-directive
+show GCC defines on Windows:
+gcc -dM -E - <NUL:
 
+on Linux:
+gcc -dM -E - </dev/null
+*/
 #define xstr(x) #x		//eine Konstante x direkt eintragen
 #define str(x) xstr(x)	//use: str(x)  -> result: x
 
@@ -45,7 +59,7 @@ Die zusätzlichen Features gegenüber der Grundversion sind:
 //End Includes
 
 //Proto
-int aufteilen(char *zk, char *w1, char *w2, char *w3, char *w4);
+int aufteilen(char *zk, char worte [] [WORTLEN], int wortmenge);
 int farbringe2Ziffer(char *farbwort);
 double farbring2Multi(char *farbwort);
 double farbring2Tolleranz(char *farbwort);
@@ -55,84 +69,59 @@ void fuelleVglArr(char vglArr[][VARIANTEN][20]);
 void cpyArrOfStr(char dest[][20], char source[][20]);
 int inputPruefen(char * input);
 int ausgabe(char worte[][WORTLEN], int pruefung);
+
+char * eingabe(char * inputStr[]);
 //End Proto
 
 int main(void)
 {
+	
 	//lokale Datenfelder
 	char inputStr[MAXINPUT + 1] = "";
-	int pruef, i;
-	char worte[4][WORTLEN];	//Mit Platz für '\0'
-							//End lokale Datenfelder
+	int pruef;
+	char worte[6][WORTLEN];
+	//End lokale Datenfelder
 
-	while (strcmp(inputStr, "-quit") != 0)
+	while (strcmp(inputStr, "-quit") != 0 && strcmp(inputStr, "-q") != 0)
 	{
-		//Begruessung und Arbeitsauftrag fuer den Benutzer
-		printf("- - - Widerstandsrechner - - -\n");
-		printf("Verwendung:\nDie Ringe eines Widerstandes mit \"-\" getrennt eingeben.\n");
-		printf("Zum Beenden \"-quit\" eingeben\n");
-
-		scanf("%" str(MAXINPUT) "[^\n]", inputStr);
-		while (getchar() != '\n');
-		for (i = 0; *(inputStr + i) != '\0'; i++)
-			*(inputStr + i) = tolower(*(inputStr + i));
-		//Aufruf der Subroutinen
-		pruef = inputPruefen(inputStr);
-		if (pruef == 0)
-			aufteilen(inputStr, worte[0], worte[1], worte[2], worte[3]);
-		ausgabe(worte, pruef);
-
-		if (strcmp(inputStr, "-quit") != 0)
+		eingabe(inputStr);
+		if (strcmp(inputStr, "-quit") != 0 && strcmp(inputStr, "-q") != 0)
 		{
+			//Aufruf der Subroutinen
+			pruef = inputPruefen(inputStr);
+			if (pruef >= 0)
+			{
+				aufteilen(inputStr, worte, pruef);
+			}
+			ausgabe(worte, pruef);
+
+
 			printf("Eingabetaste druecken\n");
-			//getchar();
+			scanf("%" str(MAXINPUT) "[^\n]", inputStr);
 			while (getchar() != '\n');
+
 			system(CLS);
 		}
 
-		// T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T 
-		/*for (i = 0; i < 4; i++)
-		{
-		printf("%s: ", worte[i]);
-		//farbringe2Ziffer(worte[i]);
-		//printf("%i", ret);
-		printf("%i\n", farbringe2Ziffer(worte[i]));
-		}
-		printf("%g\n", farbring2Multi(worte[2]));
-		int zehner, einer;
-		double mul, r, tol;
-		zehner = 10 * farbringe2Ziffer(worte[0]);
-		einer = farbringe2Ziffer(worte[1]);
-		mul = farbring2Multi(worte[2]);
-		tol = farbring2Tolleranz(worte[3]);
-		printf("Der eingegebene Widerstand hat: ");
-		//printf("%d Ohm ", ((10 * farbringe2Ziffer(worte[0]) + farbringe2Ziffer(worte[1]))* farbring2Multi(worte[2])));
-		printf("%f ", ((zehner + einer)* mul));
-		//printf("+/- %i%", farbring2Tolleranz (worte[3]));
-		printf("+/- %f \%", tol);
-		//Ausgabe an den Benutzer
-		*/
-		// T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T 
 	}
-}	//Hier wird in VS ein Breakpoint beoetigt
+}
 
 
 	/*
-	Diese Funktion zerteilt den Inputstring zk in vier Bestandteile.
-	Die Trennung erfolgt bei den Trennzeichen, die in der Define-Section definiert sind.
-	Die Ergebnisstrings werdn in form einer InPlace-Substitution an w1 bis w4 übergeben
+	Diese Funktion zerteilt den Inputstring zk in <wortmenge> Bestandteile.
+	Die Trennung erfolgt bei den TRENNZEICHEN, die in der Define-Section definiert sind.
+	Die Ergebnisstrings werdn in form einer InPlace-Substitution an worte übergeben
 	Diese Funktion geht von einer Korrekten Eingabe (Menge der Trennzeichen) aus, die zuvor sicher gestellt werden muss.
 	*/
-int aufteilen(char *zk, char *w1, char *w2, char *w3, char *w4)
+int aufteilen(char *zk, char worte [] [WORTLEN], int wortmenge)
 {
-	strncpy(w1, strtok(zk, TRENNZEICHEN), WORTLEN);
-	strncpy(w2, strtok(NULL, TRENNZEICHEN), WORTLEN);
-	strncpy(w3, strtok(NULL, TRENNZEICHEN), WORTLEN);
-	strncpy(w4, strtok(NULL, TRENNZEICHEN), WORTLEN);
-	*(w1 + WORTLEN - 1) = '\0';
-	*(w2 + WORTLEN - 1) = '\0';
-	*(w3 + WORTLEN - 1) = '\0';
-	*(w4 + WORTLEN - 1) = '\0';
+	int i;
+	strncpy(worte[0], strtok(zk, TRENNZEICHEN), WORTLEN);
+	for (i = 1; i < wortmenge; i++)	//i = 1 ist WICHTIG!!
+	{
+		strncpy(worte[i], strtok(NULL, TRENNZEICHEN), WORTLEN);
+		*(worte[i] + WORTLEN - 1) = '\0';
+	}
 	return 0;
 }
 /*
@@ -216,6 +205,17 @@ double farbring2Tolleranz(char *farbwort)
 }
 
 /*
+*/
+int farbring2TK(char *farbwort)
+{
+	int TkArr[12] = { 200, 100, 50, 15, 25, 5, -1, -1, -1, -1, -1, 10 };
+	int retVal = farbringe2Ziffer(farbwort);
+	if (retVal != -1.0)
+		return TkArr[retVal];
+	return -2.0;
+}
+
+/*
 Diese Funktion füllt ein 3-Dimensionales Array of char (Input) durch eine
 InPlace-Substitution mit Worten, die als Vergleichspartner genutzt werden.
 Die Menge der Möglichen Varianten einen Widerstandsring einzugeben ist im
@@ -233,7 +233,7 @@ void fuelleVglArr(char vglArr[][VARIANTEN][20])
 	char sw[VARIANTEN][20] = { "0", "schwarz", "sw", "black", "bk" };
 	char br[VARIANTEN][20] = { "1", "braun", "br", "brown", "bn" };
 	char rt[VARIANTEN][20] = { "2", "rot", "rt", "red", "rd" };
-	char or [VARIANTEN][20] = { "3", "orange", "or", "og" };
+	char or[VARIANTEN][20] = { "3", "orange", "or", "og" };
 	char ge[VARIANTEN][20] = { "4", "gelb", "ge", "yellow", "ye" };
 	char gn[VARIANTEN][20] = { "5", "gruen", "gn", "green", "gr\x81n", "gr\x9An", "grun" };
 	char bl[VARIANTEN][20] = { "6", "blau", "bl", "blue", "bu" };
@@ -277,48 +277,53 @@ und gibt bei Falscheingaben in Abhängigkeit vom Fehler
 einen int-Wert zurück.
 Erfüllt eine Eingabe alle Anforderungen - enthält jedoch
 nicht definierte Worte wird dies an anderer Stelle bearbeitet.
+Da Kohleschicht aber auch Metallschichtwiderstände berücksichtigt werden sollen,
+wird hier die Anzahl der eingegebenen Ringe gezählt und wenn zulässig als positive
+Zahl zurück gegeben
 
-Rückgabewerte:
-0: input IO
+
+Fehler-Rückgabewerte:
 -1: kritischer Fehler
-1: zu wenige Worte (Trennzeichen)
-2: zu viele Worte (Trennzeichen)
-
+-2: zu wenige Worte (Trennzeichen)
+-3: zu viele Worte (Trennzeichen)
+-4: leere Bereiche (zwischen TRENNZEICHEN)
 */
 int inputPruefen(char * input)
 {
 	int wortmenge = 4;	//entspricht länge des worte[]
-	int i = 0, k = 0, l = 0;
+	int i = 0, k = 0, m = 0;
 	char * trennz = TRENNZEICHEN;
 	while (*(input + i) != '\0')
 	{
 		while (*(trennz + k) != '\0')
 		{
 			if (*(input + i) == *(trennz + k))
-				l++;
+				m++;
 			k++;
 		}
 		k = 0;
 		i++;
 	}
-	if (l < wortmenge - 1)	//n(trennz.) = wortmenge -1
-		return 1;
-	if (l > wortmenge - 1)
-		return 2;
+	if (m < wortmenge - 1)	//n(trennz.) = wortmenge -1
+		return -2;
+	if (m > wortmenge +1)	//Bei Wortmenge = 4 wäre wortmenge +1 der Met.R mit Tempgradient
+		return -3;
+	wortmenge = m + 1;
 
-	i = k = l = 0;
+	//Prüfen ob sich Zeichen zwischen einzelnen TRENNZEICHEN befinden
+	i = k = m = 0;
 	while (*(input + i) != '\0')	//Den String entlang iterieren
 	{
 		while (*(trennz + k) != '\0')	//Die Trennzerichen durchprobieren für zeichen i
 		{
 			if (*(input + i) == *(trennz + k))
-				while (*(trennz + l) != '\0')
+				while (*(trennz + m) != '\0')
 				{
-					if (*(trennz + l) == *(input + i + 1) || *(input + i + 1) == '\0')
-						return 3;
-					l++;
+					if (*(trennz + m) == *(input + i + 1) || *(input + i + 1) == '\0')
+						return -4;
+					m++;
 				}
-			l = 0;
+			m = 0;
 			k++;
 
 		}
@@ -326,7 +331,35 @@ int inputPruefen(char * input)
 		i++;
 	}
 
-	return 0;
+	return wortmenge;
+}
+
+char * eingabe (char * inputStr [])
+{
+	//lokale Datenfelder
+	int i;
+	char * trennz = TRENNZEICHEN;
+	//End lokale Datenfelder
+
+		//Begruessung und Arbeitsauftrag fuer den Benutzer
+		printf("- - - Widerstandsrechner Vollverion - - -\n");
+		//OUT: "Verwendung:\nDie Ringe eines Widerstandes mit TRENNZEICHEN getrennt eingeben.\n"
+		printf("Verwendung:\nDie Ringe eines Widerstandes entweder mit ");
+		for (i = 0; *(trennz + i) != '\0'; i++)
+		{
+			printf("\"%c\" ", *(trennz + i));
+			if (*(trennz + i + 1) != '\0')
+				printf("oder ");
+		}
+		printf("getrennt eingeben.\n");	
+
+		printf("Zum Beenden \"-quit\" eingeben. (kurz \"-q\")\n");
+		scanf("%" str(MAXINPUT) "[^\n]", inputStr);
+		while (getchar() != '\n');
+		for (i = 0; *(inputStr + i) != '\0'; i++)
+			*(inputStr + i) = tolower(*(inputStr + i));
+	
+	return inputStr;
 }
 
 /*
@@ -340,21 +373,45 @@ double farbring2Tolleranz(char *farbwort);
 */
 int ausgabe(char worte[][WORTLEN], int pruefung)
 {
-	int zehner, einer, exp = 0;
+	//TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO
+	//Rückgabewerte der Prüfung anpassen
+	int ring1, ring2, ring3, exp = 0, i;
 	double mul, r, tol;
 	char expChar[5] = " kMG";
+	char outStr[5000];
 	switch (pruefung)
 	{
-	case 0:
+	case 6:
+	case 5:
+	case 4:
+	case 3:
 		//printf("Eingabe korrekt\n\n");
-		zehner = farbringe2Ziffer(worte[0]);
-		einer = farbringe2Ziffer(worte[1]);
-		mul = farbring2Multi(worte[2]);
-		tol = farbring2Tolleranz(worte[3]);
-		printf("---|  %s  %s  %s    %s      |---\n", worte[0], worte[1], worte[2], worte[3]);
-		if (zehner > -1 && einer > -1 && mul > -1 && tol > -1)
+		ring1 = farbringe2Ziffer(worte[0]);
+		ring2 = farbringe2Ziffer(worte[1]);
+		if (pruefung >= 5)
 		{
-			r = (zehner * 10 + einer)*mul;
+			ring3 = farbringe2Ziffer(worte[2]);
+			mul = farbring2Multi(worte[3]);
+			tol = farbring2Tolleranz(worte[4]);
+		}
+		else
+		{
+			mul = farbring2Multi(worte[2]);
+			tol = farbring2Tolleranz(worte[3]);
+		}
+		//printf("---|  %s  %s  %s    %s      |---\n", worte[0], worte[1], worte[2], worte[3]);
+		//Semigrafik des Widerstandes anzeigen
+
+		printf("---|");
+		for (i = 0; i < pruefung - 1; i++)	//ACHTUNG: i wird einmal nach dem for benötigt, dannach wieder frei
+		{
+			printf(("  %s "), worte[i]);
+		}
+		printf("    %s   |---\n", worte[i]);	//i wird benötigt
+
+		if (ring1 > -1 && ring2 > -1 && mul > -1 && tol > -1)
+		{
+			r = (ring1 * 10 + ring2)*mul;
 			while (r >= 1000)
 			{
 				r = r / 1000;
@@ -365,9 +422,9 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		}
 		else
 		{
-			if (zehner < 0)
+			if (ring1 < 0)
 				printf("%s ist nicht als moegliche Farbe definiert!\n", worte[0]);
-			else if (einer < 0)
+			else if (ring2 < 0)
 				printf("%s ist nicht als moegliche Farbe definiert!\n", worte[1]);
 			else if (mul < 0)
 			{
@@ -387,13 +444,13 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 			printf("korrektes Eingabebeispiel: \"braun-braun-schwarz-gold\"\n");
 		}
 		break;
-	case 1:
+	case -2:
 		printf("Die Eingabe ist fehlerhaft (zu wenige Trennzeichen)\n");
 		break;
-	case 2:
+	case -3:
 		printf("Die Eingabe ist fehlerhaft (zu viele Trennzeichen)\n");
 		break;
-	case 3:
+	case -4:
 		printf("Die Eingabe enthaelt zu wenige Farbringe (ausreichend Trennzeichen)");
 		break;
 	default:
