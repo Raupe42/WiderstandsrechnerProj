@@ -340,14 +340,14 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 			else if (mul < 0)
 			{
 				if (mul == -1)
-					printf("%s ist an dieser Stelle nicht zulaessig",worte[2]);
+					printf("%s ist an dieser Stelle nicht zulaessig.\n",worte[2]);
 				else if (mul == -2)
 					printf ("%s ist nicht als moegliche Farbe definiert!\n", worte[2]);
 			}
 			else if (tol < 0)
 			{
 				if (tol == -1)
-					printf("%s ist als Multiplikator nicht zulässig", worte[3]);
+					printf("%s ist als Multiplikator nicht zulässig.\n", worte[3]);
 				else if (tol == -2)
 					printf("%s ist nicht als moegliche Farbe definiert!\n", worte[3]);
 			}

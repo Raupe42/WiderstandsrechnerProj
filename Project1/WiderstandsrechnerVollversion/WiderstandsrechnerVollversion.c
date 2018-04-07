@@ -18,7 +18,16 @@ Die zusätzlichen Features gegenüber der Grundversion sind:
   ernuet Enter gerückt werden oder die Eingabe kann überschrieben
   werden.
 - Eingabe und Verarbneitung von Widerständen mit 5 oder 6 Ringen
-
+- Umlaute in Ausgaben mit
+	ä : \x84
+	ö : \x94
+	ü : \x81
+	Ä : \x8E
+	Ö : \x99
+	Ü : \x9A
+	ß : \xE1
+	von: http://www.c-programmieren.com/C-Lernen.html#Umlaute
+- Angabe des Widerstandstyps (Kohle oder Metallschicht)
 
 
 */
@@ -71,6 +80,8 @@ int inputPruefen(char * input);
 int ausgabe(char worte[][WORTLEN], int pruefung);
 
 char * eingabe(char * inputStr[]);
+void hilfeAnzeigen();
+void farbenAnzeigen();
 //End Proto
 
 int main(void)
@@ -87,25 +98,71 @@ int main(void)
 		eingabe(inputStr);
 		if (strcmp(inputStr, "-quit") != 0 && strcmp(inputStr, "-q") != 0)
 		{
-			//Aufruf der Subroutinen
-			pruef = inputPruefen(inputStr);
-			if (pruef >= 0)
+			if (strcmp(inputStr, "-?") == 0 || strcmp(inputStr, "-help") == 0)
+				hilfeAnzeigen();
+			else if (strcmp(inputStr, "-1") == 0)
+				farbenAnzeigen();
+			/*else if (strcmp(inputStr, "-x") == 0)
+				erweiterteAnzeige();*/
+			else	//Normaler Programmaufruf
 			{
-				aufteilen(inputStr, worte, pruef);
+				//Aufruf der Subroutinen
+				pruef = inputPruefen(inputStr);
+				if (pruef >= 0)
+				{
+					aufteilen(inputStr, worte, pruef);
+				}
+				ausgabe(worte, pruef);
+
+
+				printf("Eingabetaste druecken\n");
+				scanf("%" str(MAXINPUT) "[^\n]", inputStr);
+				while (getchar() != '\n');
+
+				system(CLS);
 			}
-			ausgabe(worte, pruef);
-
-
-			printf("Eingabetaste druecken\n");
-			scanf("%" str(MAXINPUT) "[^\n]", inputStr);
-			while (getchar() != '\n');
-
-			system(CLS);
 		}
 
 	}
 }
 
+/*
+Diese Funktiongibt eine Einleitung,
+Fragt eine Eingabe ab 
+und führt die vorverarbeitung durch
+Die Eingabe wird als InPlaceSubstitutuion zurück gegeben
+mit gleichzeitig der Adresse davon als Rückgabewert
+*/
+
+char * eingabe(char * inputStr[])
+{
+	//lokale Datenfelder
+	int i;
+	char * trennz = TRENNZEICHEN;
+	//End lokale Datenfelder
+
+	//Begruessung und Arbeitsauftrag fuer den Benutzer
+	printf("- - - Widerstandsrechner Vollverion - - -\n");
+	//OUT: "Verwendung:\nDie Ringe eines Widerstandes mit TRENNZEICHEN getrennt eingeben.\n"
+	printf("Verwendung:\nDie Ringe eines Widerstandes entweder mit ");
+	for (i = 0; *(trennz + i) != '\0'; i++)
+	{
+		printf("\"%c\" ", *(trennz + i));
+		if (*(trennz + i + 1) != '\0')
+			printf("oder ");
+	}
+	printf("getrennt eingeben.\n");
+	
+	printf("-help: Hilfe anzeigen (kurz: \" -?\"\n");
+	printf("Zum Beenden \"-quit\" eingeben. (kurz: \"-q\")\n");
+
+	scanf("%" str(MAXINPUT) "[^\n]", inputStr);
+	while (getchar() != '\n');
+	for (i = 0; *(inputStr + i) != '\0'; i++)
+		*(inputStr + i) = tolower(*(inputStr + i));
+
+	return inputStr;
+}
 
 	/*
 	Diese Funktion zerteilt den Inputstring zk in <wortmenge> Bestandteile.
@@ -334,33 +391,7 @@ int inputPruefen(char * input)
 	return wortmenge;
 }
 
-char * eingabe (char * inputStr [])
-{
-	//lokale Datenfelder
-	int i;
-	char * trennz = TRENNZEICHEN;
-	//End lokale Datenfelder
 
-		//Begruessung und Arbeitsauftrag fuer den Benutzer
-		printf("- - - Widerstandsrechner Vollverion - - -\n");
-		//OUT: "Verwendung:\nDie Ringe eines Widerstandes mit TRENNZEICHEN getrennt eingeben.\n"
-		printf("Verwendung:\nDie Ringe eines Widerstandes entweder mit ");
-		for (i = 0; *(trennz + i) != '\0'; i++)
-		{
-			printf("\"%c\" ", *(trennz + i));
-			if (*(trennz + i + 1) != '\0')
-				printf("oder ");
-		}
-		printf("getrennt eingeben.\n");	
-
-		printf("Zum Beenden \"-quit\" eingeben. (kurz \"-q\")\n");
-		scanf("%" str(MAXINPUT) "[^\n]", inputStr);
-		while (getchar() != '\n');
-		for (i = 0; *(inputStr + i) != '\0'; i++)
-			*(inputStr + i) = tolower(*(inputStr + i));
-	
-	return inputStr;
-}
 
 
 /*
@@ -378,29 +409,34 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 	int ring1, ring2, ring3 = 0, exp = 0, tempKoef = 0, i;
 	double mul, r, tol;
 	char expChar[5] = " kMG";
-	char outStr[5000];
+	char mulStr[WORTLEN], tolStr[WORTLEN], rArt [WORTLEN];
 	switch (pruefung)
 	{
 	case 6: tempKoef = farbring2TK(worte[5]);
-	case 5:
-			ring3 = farbringe2Ziffer(worte[2]);
+	case 5: ring3 = farbringe2Ziffer(worte[2]);
 	case 4:
-	case 3:
 		//printf("Eingabe korrekt\n\n");
 		ring1 = farbringe2Ziffer(worte[0]);
 		ring2 = farbringe2Ziffer(worte[1]);
-		if (pruefung >= 5)
+		if (pruefung >= 5)	//Metallschichtwiderstand
 		{
 			ring3 = farbringe2Ziffer(worte[2]);
 			mul = farbring2Multi(worte[3]);
+			strcpy(mulStr, worte[3]);
 			tol = farbring2Tolleranz(worte[4]);
+			strcpy(tolStr, worte[4]);
+			strcpy(rArt, "Metallschicht");
+
 			r = (ring1 * 100 + ring2*10 + ring3)*mul;
 		}
-		else
+		else				//Kohleschichtwiderstand
 		{
 			mul = farbring2Multi(worte[2]);
+			strcpy(mulStr, worte[2]);
 			tol = farbring2Tolleranz(worte[3]);
+			strcpy(tolStr, worte[3]);
 			r = (ring1 * 10 + ring2)*mul;
+			strcpy(rArt, "Kohle");
 		}
 		//printf("---|  %s  %s  %s    %s      |---\n", worte[0], worte[1], worte[2], worte[3]);
 		//Semigrafik des Widerstandes anzeigen
@@ -421,38 +457,41 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 				r = r / 1000;
 				exp++;
 			}
-			printf("Ein Widerstand mit %.1f %cOhm", r, *(expChar + exp));
+			printf("Ein %swiderstand mit %.3f %cOhm",rArt, r, *(expChar + exp));
 			printf(" +/- %.f %%", tol);
 			if (tempKoef > 0)
 			{
 				printf(" TK +/- %i%% ", tempKoef);
 			}
 			printf("\n\n");
+			double temp = r * (1 - tol * 0.01);
+			printf("Der Widerstandswert liegt also zwischen %.4f %cOhm und %.4f %cOhm.\n", r* (1 - tol * 0.01), *(expChar + exp), r * (1+tol * 0.01), *(expChar + exp));
 		}
-		else
+		else		//mindestens ein eingegebenes Wort konnte nicht zugeordnet werden
 		{
 			if (ring1 < 0)
-				printf("%s ist nicht als moegliche Farbe definiert!\n", worte[0]);
+				printf("%s ist nicht als m\x94gliche Farbe definiert!\n", worte[0]);
 			else if (ring2 < 0)
-				printf("%s ist nicht als moegliche Farbe definiert!\n", worte[1]);
+				printf("%s ist nicht als m\x94gliche Farbe definiert!\n", worte[1]);
 			else if (mul < 0)
 			{
 				if (mul == -1)
-					printf("%s ist an dieser Stelle nicht zulässig", worte[2]);
+					printf("%s ist als Multiplikator nicht zul\x84ssig\n",mulStr);
 				else if (mul == -2)
-					printf("%s ist nicht als moegliche Farbe definiert!\n", worte[2]);
+					printf("%s ist nicht als m\x94gliche Farbe definiert!\n", mulStr);
 			}
 			else if (tol < 0)
 			{
 				if (tol == -1)
-					printf("%s ist als Multiplikator nicht zulässig", worte[3]);
+					printf("%s ist als Tolleranzwert nicht zul\x84ssig\n", tolStr);
 				else if (tol == -2)
-					printf("%s ist nicht als moegliche Farbe definiert!\n", worte[3]);
+					printf("%s ist nicht als m\x94gliche Farbe definiert!\n", tolStr);
 			}
 			printf("Mindestens eine der eingegebenen Farben existiert (in dieser Kombination) nicht.\n");
 			printf("korrektes Eingabebeispiel: \"braun-braun-schwarz-gold\"\n");
 		}
 		break;
+
 	case -2:
 		printf("Die Eingabe ist fehlerhaft (zu wenige Trennzeichen)\n");
 		break;
@@ -460,9 +499,66 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		printf("Die Eingabe ist fehlerhaft (zu viele Trennzeichen)\n");
 		break;
 	case -4:
-		printf("Die Eingabe enthaelt zu wenige Farbringe (ausreichend Trennzeichen)");
+		printf("Die Eingabe enth\x84lt zu wenige Farbringe (ausreichend Trennzeichen)");
 		break;
 	default:
 		printf("schwerer Eingabefehler\n");
 	}
+}
+
+
+/*
+	Diese Funktion zeigt den Hilfetext an
+*/
+void hilfeAnzeigen()
+{
+	char * trennz = TRENNZEICHEN;
+	int i;
+	system(CLS);
+	printf("---|  Widerstandsrechner Hilfe |---\n");
+	printf("Bedienung: Die Ringe eines Widerstandes ablesen und eintragen.\n");
+	printf("Die einzelnen Ringe sind mit");
+	for (i = 0; *(trennz + i) != '\0'; i++)
+	{
+		printf("\"%c\" ", *(trennz + i));
+		if (*(trennz + i + 1) != '\0')
+			printf("oder ");
+	}
+	printf("zu trennen.\n");
+	printf("Anschlie""\xE1""end wird der Widerstandswert, sowie Tolleranz und wenn vorhanden\n");
+	printf("Temperaturkoeffizient (TK) angezeigt.\n");
+	printf("zur Anzeige der Varianten eine Farbe einzugeben \" -1\" eingeben\n");
+	printf("zur Anzeige des Wertebereichs eines Widerstandes nach der Ausgabe -x eingeben\n");
+
+	printf("Bitte eine Taste dr""\x81""cken...\n");
+	while (getchar() != '\n');
+	system(CLS);
+	return;
+}
+
+/*
+	Diese Funktion gibt auf der Basis des vglArr die möglichen
+	Eingaben des Benutzer an
+*/
+void farbenAnzeigen()
+{
+	static char vgl[12][VARIANTEN][20];
+	int i, j;
+	fuelleVglArr(vgl);
+
+	system(CLS);
+	printf("Varianten eine Farbe einzugeben:\n");
+	for (i = 0; i < 12; i++)
+	{
+		for (j = 1; j < VARIANTEN; j++)
+		{
+			if (strcmp (vgl [i] [j], "") != 0)
+				printf("|%s| ", vgl[i][j]);
+		}
+		printf("\n");
+	}
+	printf("Bitte eine Taste dr""\x81""cken...\n");
+	while (getchar() != '\n');
+	system(CLS);
+	return;
 }
