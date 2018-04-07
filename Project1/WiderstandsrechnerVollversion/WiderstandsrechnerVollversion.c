@@ -17,7 +17,7 @@ Die zusätzlichen Features gegenüber der Grundversion sind:
   oder etwas neues eingegeben werden. Anschließend muss 
   ernuet Enter gerückt werden oder die Eingabe kann überschrieben
   werden.
-- 
+- Eingabe und Verarbneitung von Widerständen mit 5 oder 6 Ringen
 
 
 
@@ -32,7 +32,7 @@ Die zusätzlichen Features gegenüber der Grundversion sind:
 #ifdef UNIX
 #define CLS "clear"
 #elif unix
-#definde CLS "clear"
+#define CLS "clear"
 #else
 #define CLS "cls"
 #endif
@@ -362,6 +362,7 @@ char * eingabe (char * inputStr [])
 	return inputStr;
 }
 
+
 /*
 Diese Funktion verwaltet und erzeugt die Ausgaben an den Benutzer
 inklusieve der Fehlerbeschreibung bei falschen Eingaben
@@ -373,16 +374,16 @@ double farbring2Tolleranz(char *farbwort);
 */
 int ausgabe(char worte[][WORTLEN], int pruefung)
 {
-	//TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO		TODO
-	//Rückgabewerte der Prüfung anpassen
-	int ring1, ring2, ring3, exp = 0, i;
+	
+	int ring1, ring2, ring3 = 0, exp = 0, tempKoef = 0, i;
 	double mul, r, tol;
 	char expChar[5] = " kMG";
 	char outStr[5000];
 	switch (pruefung)
 	{
-	case 6:
+	case 6: tempKoef = farbring2TK(worte[5]);
 	case 5:
+			ring3 = farbringe2Ziffer(worte[2]);
 	case 4:
 	case 3:
 		//printf("Eingabe korrekt\n\n");
@@ -393,11 +394,13 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 			ring3 = farbringe2Ziffer(worte[2]);
 			mul = farbring2Multi(worte[3]);
 			tol = farbring2Tolleranz(worte[4]);
+			r = (ring1 * 100 + ring2*10 + ring3)*mul;
 		}
 		else
 		{
 			mul = farbring2Multi(worte[2]);
 			tol = farbring2Tolleranz(worte[3]);
+			r = (ring1 * 10 + ring2)*mul;
 		}
 		//printf("---|  %s  %s  %s    %s      |---\n", worte[0], worte[1], worte[2], worte[3]);
 		//Semigrafik des Widerstandes anzeigen
@@ -409,16 +412,22 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		}
 		printf("    %s   |---\n", worte[i]);	//i wird benötigt
 
-		if (ring1 > -1 && ring2 > -1 && mul > -1 && tol > -1)
+		//Bei gültiger Eingabe Wert berechnen
+		if (ring1 > -1 && ring2 > -1 && ring3 > -1 && mul > -1 && tol > -1 && tempKoef > -1)
 		{
-			r = (ring1 * 10 + ring2)*mul;
+			//r = (ring1 * 10 + ring2)*mul;
 			while (r >= 1000)
 			{
 				r = r / 1000;
 				exp++;
 			}
 			printf("Ein Widerstand mit %.1f %cOhm", r, *(expChar + exp));
-			printf(" +/- %.f %%\n\n", tol);
+			printf(" +/- %.f %%", tol);
+			if (tempKoef > 0)
+			{
+				printf(" TK +/- %i%% ", tempKoef);
+			}
+			printf("\n\n");
 		}
 		else
 		{

@@ -8,5 +8,5 @@ c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstand
 c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(362): warning C4047: "return": Anzahl der Dereferenzierungen bei "char *" und "char **" unterschiedlich
 c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(357): warning C4477: "scanf": Die Formatzeichenfolge "%99[^\n]" erfordert ein Argument vom Typ "char *", das variadic-Argument "1" weist aber den Typ "char **" auf.
 c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(381): warning C4101: "outStr": Unreferenzierte lokale Variable
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(459): warning C4716: "ausgabe": Muss einen Wert zurückgeben
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(468): warning C4716: "ausgabe": Muss einen Wert zurückgeben
   WiderstandsrechnerVollversion.vcxproj -> C:\Users\jensh\OneDrive\Dokumente\Git\WiderstandsrechnerProj\Project1\Debug\WiderstandsrechnerVollversion.exe

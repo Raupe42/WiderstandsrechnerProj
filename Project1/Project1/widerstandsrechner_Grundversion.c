@@ -15,7 +15,7 @@ Dieses Programm stellt das Prdukt als vereinbarte Grundversion dar.
 #ifdef UNIX
 #define CLS "clear"
 #elif unix
-#definde CLS "clear"
+#define CLS "clear"
 #else
 #define CLS "cls"
 #endif
