@@ -65,6 +65,7 @@ gcc -dM -E - </dev/null
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <locale.h>
 //End Includes
 
 //Proto
@@ -93,6 +94,8 @@ int main(void)
 	char worte[6][WORTLEN];
 	//End lokale Datenfelder
 
+	//setlocale(LC_ALL, "");		//Funktioniert nicht, die Eingabe wird falsch eingelesen
+	//setlocale(LC_NUMERIC, "");	//mit jeweils zwei '\0' zwischen jedem Buchstaben
 	while (strcmp(inputStr, "-quit") != 0 && strcmp(inputStr, "-q") != 0)
 	{
 		eingabe(inputStr);
@@ -457,15 +460,16 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 				r = r / 1000;
 				exp++;
 			}
+			
 			printf("Ein %swiderstand mit %.3f %cOhm",rArt, r, *(expChar + exp));
-			printf(" +/- %.f %%", tol);
+			printf(" +/- %.f%%", tol);
 			if (tempKoef > 0)
 			{
-				printf(" TK +/- %i%% ", tempKoef);
+				printf(" TK +/-%ippm /K", tempKoef);
 			}
 			printf("\n\n");
-			double temp = r * (1 - tol * 0.01);
-			printf("Der Widerstandswert liegt also zwischen %.4f %cOhm und %.4f %cOhm.\n", r* (1 - tol * 0.01), *(expChar + exp), r * (1+tol * 0.01), *(expChar + exp));
+			printf("Der Widerstandswert liegt also zwischen %.4f %cOhm und %.4f %cOhm +/-%ippm /K.\n",  r* (1 - tol * 0.01), *(expChar + exp), r * (1+tol * 0.01), *(expChar + exp), tempKoef);
+			
 		}
 		else		//mindestens ein eingegebenes Wort konnte nicht zugeordnet werden
 		{
@@ -528,7 +532,6 @@ void hilfeAnzeigen()
 	printf("Anschlie""\xE1""end wird der Widerstandswert, sowie Tolleranz und wenn vorhanden\n");
 	printf("Temperaturkoeffizient (TK) angezeigt.\n");
 	printf("zur Anzeige der Varianten eine Farbe einzugeben \" -1\" eingeben\n");
-	printf("zur Anzeige des Wertebereichs eines Widerstandes nach der Ausgabe -x eingeben\n");
 
 	printf("Bitte eine Taste dr""\x81""cken...\n");
 	while (getchar() != '\n');
