@@ -1,8 +1,18 @@
 /*
 author: Tim, Jens
 
+Dies ist die Vollversion des Widerstandsrechners.
+Der Grundansprucht ist wie in der Grundversion:
 Task: Erfüllung des Pflichtenhefts gemäß der Dokumentation.
-Dieses Programm stellt das Prdukt als vereinbarte Grundversion dar.
+Dieses Programm stellt das Prdukt als vereinbarte Vollversion dar.
+Das Programm nutzt nicht mehr die vorgeschlageen Prototypen.
+Das Programm wurde erstellt auf Basis der Grundversion des Commits
+f4065afa2c78b3363072cd485e62e28dac27f17a [f4065af]
+vom 06.04.18
+Die zusätzlichen Features gegenüber der Grundversion sind:
+
+
+
 
 */
 
@@ -53,7 +63,7 @@ int main(void)
 	char inputStr[MAXINPUT + 1] = "";
 	int pruef, i;
 	char worte[4][WORTLEN];	//Mit Platz für '\0'
-	//End lokale Datenfelder
+							//End lokale Datenfelder
 
 	while (strcmp(inputStr, "-quit") != 0)
 	{
@@ -80,9 +90,31 @@ int main(void)
 			system(CLS);
 		}
 
-		
+		// T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T 
+		/*for (i = 0; i < 4; i++)
+		{
+		printf("%s: ", worte[i]);
+		//farbringe2Ziffer(worte[i]);
+		//printf("%i", ret);
+		printf("%i\n", farbringe2Ziffer(worte[i]));
+		}
+		printf("%g\n", farbring2Multi(worte[2]));
+		int zehner, einer;
+		double mul, r, tol;
+		zehner = 10 * farbringe2Ziffer(worte[0]);
+		einer = farbringe2Ziffer(worte[1]);
+		mul = farbring2Multi(worte[2]);
+		tol = farbring2Tolleranz(worte[3]);
+		printf("Der eingegebene Widerstand hat: ");
+		//printf("%d Ohm ", ((10 * farbringe2Ziffer(worte[0]) + farbringe2Ziffer(worte[1]))* farbring2Multi(worte[2])));
+		printf("%f ", ((zehner + einer)* mul));
+		//printf("+/- %i%", farbring2Tolleranz (worte[3]));
+		printf("+/- %f \%", tol);
+		//Ausgabe an den Benutzer
+		*/
+		// T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T	 T E S T 
 	}
-}	
+}	//Hier wird in VS ein Breakpoint beoetigt
 
 
 	/*
@@ -97,34 +129,34 @@ int aufteilen(char *zk, char *w1, char *w2, char *w3, char *w4)
 	strncpy(w2, strtok(NULL, TRENNZEICHEN), WORTLEN);
 	strncpy(w3, strtok(NULL, TRENNZEICHEN), WORTLEN);
 	strncpy(w4, strtok(NULL, TRENNZEICHEN), WORTLEN);
-	*(w1 + WORTLEN-1) = '\0';
-	*(w2 + WORTLEN-1) = '\0';
-	*(w3 + WORTLEN-1) = '\0';
-	*(w4 + WORTLEN-1) = '\0';
+	*(w1 + WORTLEN - 1) = '\0';
+	*(w2 + WORTLEN - 1) = '\0';
+	*(w3 + WORTLEN - 1) = '\0';
+	*(w4 + WORTLEN - 1) = '\0';
 	return 0;
 }
 /*
-	Diese Funktion vergleicht den Inputstring farbwort mit einer Liste
-	um einen Farbring zu ermitteln und gibt als ReturnValue die Ziffer
-	des Farbrings wieder.
-	Da diese Funktion nicht nur zur Bestimmung der Ziffern sondern für alle
-	möglichen Farbringe genutzt wird, werden für Gold und Silber die Zeichen 
-	die Zahlen 10 und 11 zurück gegeben.
-	
-	Dieses Verhalten ermöglicht eine einfache Auswertung des übergebenen Farbwortes.
-	Bei Rückgabewert -1 wurde keine Übereinstimmung gefunden
-	*****
-	dependency: void fuelleVglArr(char vglArr[][VARIANTEN][20]);
-	*****
+Diese Funktion vergleicht den Inputstring farbwort mit einer Liste
+um einen Farbring zu ermitteln und gibt als ReturnValue die Ziffer
+des Farbrings wieder.
+Da diese Funktion nicht nur zur Bestimmung der Ziffern sondern für alle
+möglichen Farbringe genutzt wird, werden für Gold und Silber die Zeichen
+die Zahlen 10 und 11 zurück gegeben.
+
+Dieses Verhalten ermöglicht eine einfache Auswertung des übergebenen Farbwortes.
+Bei Rückgabewert -1 wurde keine Übereinstimmung gefunden
+*****
+dependency: void fuelleVglArr(char vglArr[][VARIANTEN][20]);
+*****
 */
 int farbringe2Ziffer(char *farbwort)
 {
 	int farbe, var, retValInt = -1;
 	char retValStr[20];
 	static char vgl[12][VARIANTEN][20];
-	if (vgl [0] [0] [0]!= '0')	//Das Array soll nur einmal gefuellt werden
+	if (vgl[0][0][0] != '0')	//Das Array soll nur einmal gefuellt werden
 		fuelleVglArr(vgl);
-	
+
 	for (farbe = 0; farbe < 12; farbe++)
 	{
 		for (var = 1; var < VARIANTEN; var++)
@@ -146,18 +178,18 @@ int farbringe2Ziffer(char *farbwort)
 }
 
 /*
-	Diese Funktion gibt einen Multiplikator für einen Inputstring zurück
-	Der Rückgabewert ist double, da es auch die Multiplikatoren 0.1 und 0.01 gibt.
-	Das eigentliche Wandeln des Farbwortes geschieht in "int farbringe2Ziffer (..)".
-	Ein Returnwert von -1 zeigt einen unzulässigen Ring an dieser Position.
-	Ein Returnwert von -2 zeigt eine nicht definierte Farbeeingabe.
-	*****
-	dependency: int farbringe2Ziffer(char *farbwort);
-	*****
+Diese Funktion gibt einen Multiplikator für einen Inputstring zurück
+Der Rückgabewert ist double, da es auch die Multiplikatoren 0.1 und 0.01 gibt.
+Das eigentliche Wandeln des Farbwortes geschieht in "int farbringe2Ziffer (..)".
+Ein Returnwert von -1 zeigt einen unzulässigen Ring an dieser Position.
+Ein Returnwert von -2 zeigt eine nicht definierte Farbeeingabe.
+*****
+dependency: int farbringe2Ziffer(char *farbwort);
+*****
 */
 double farbring2Multi(char *farbwort)
 {
-	double mulArr [12] = { 1.0, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 10000000.0, 100000000.0, 1000000000.0, 0.1, 0.01 };
+	double mulArr[12] = { 1.0, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 10000000.0, 100000000.0, 1000000000.0, 0.1, 0.01 };
 	int retVal = farbringe2Ziffer(farbwort);
 	if (retVal != -1.0)
 		return mulArr[retVal];
@@ -176,7 +208,7 @@ dependency: int farbringe2Ziffer(char *farbwort);
 */
 double farbring2Tolleranz(char *farbwort)
 {
-	double TolArr[12] = { -1.0, 1.0, 2.0, -1.0, -1.0, 0.5, 0.25, 0.1, 0.05, -1.0, 5.0, 10.0};
+	double TolArr[12] = { -1.0, 1.0, 2.0, -1.0, -1.0, 0.5, 0.25, 0.1, 0.05, -1.0, 5.0, 10.0 };
 	int retVal = farbringe2Ziffer(farbwort);
 	if (retVal != -1.0)
 		return TolArr[retVal];
@@ -184,26 +216,26 @@ double farbring2Tolleranz(char *farbwort)
 }
 
 /*
-	Diese Funktion füllt ein 3-Dimensionales Array of char (Input) durch eine 
-	InPlace-Substitution mit Worten, die als Vergleichspartner genutzt werden.
-	Die Menge der Möglichen Varianten einen Widerstandsring einzugeben ist im
-	#define VARIANTEN festgelegt. Lediglich die Länge der einzelenen Bezeichnung
-	ist auf 19 Zeichen fest vergeben.
-	Es besteht eine Abhängigkeit zu "void cpyArrOfStr(..)". Die Hilfsfunktion ermöglicht
-	eine übersichtliche Eingabe in einzelne Arrays. Nach der Eingabe werden die Arrays in das Gesamte (input)
-	Array kopiert.
-	*****
-	dependency: void cpyArrOfStr(char dest[][20], char source[][20]);
-	*****
+Diese Funktion füllt ein 3-Dimensionales Array of char (Input) durch eine
+InPlace-Substitution mit Worten, die als Vergleichspartner genutzt werden.
+Die Menge der Möglichen Varianten einen Widerstandsring einzugeben ist im
+#define VARIANTEN festgelegt. Lediglich die Länge der einzelenen Bezeichnung
+ist auf 19 Zeichen fest vergeben.
+Es besteht eine Abhängigkeit zu "void cpyArrOfStr(..)". Die Hilfsfunktion ermöglicht
+eine übersichtliche Eingabe in einzelne Arrays. Nach der Eingabe werden die Arrays in das Gesamte (input)
+Array kopiert.
+*****
+dependency: void cpyArrOfStr(char dest[][20], char source[][20]);
+*****
 */
 void fuelleVglArr(char vglArr[][VARIANTEN][20])
 {
 	char sw[VARIANTEN][20] = { "0", "schwarz", "sw", "black", "bk" };
 	char br[VARIANTEN][20] = { "1", "braun", "br", "brown", "bn" };
 	char rt[VARIANTEN][20] = { "2", "rot", "rt", "red", "rd" };
-	char or[VARIANTEN][20] = { "3", "orange", "or", "og" };
+	char or [VARIANTEN][20] = { "3", "orange", "or", "og" };
 	char ge[VARIANTEN][20] = { "4", "gelb", "ge", "yellow", "ye" };
-	char gn[VARIANTEN][20] = { "5", "gruen", "gn", "green", "gr\x81n", "gr\x9An", "grun"};
+	char gn[VARIANTEN][20] = { "5", "gruen", "gn", "green", "gr\x81n", "gr\x9An", "grun" };
 	char bl[VARIANTEN][20] = { "6", "blau", "bl", "blue", "bu" };
 	char vi[VARIANTEN][20] = { "7", "violett", "vi", "voilet", "vt", "lila", "vio" };
 	char gr[VARIANTEN][20] = { "8", "grau", "gr", "grey", "gy" };
@@ -213,7 +245,7 @@ void fuelleVglArr(char vglArr[][VARIANTEN][20])
 	cpyArrOfStr(vglArr[0], sw);
 	cpyArrOfStr(vglArr[1], br);
 	cpyArrOfStr(vglArr[2], rt);
-	cpyArrOfStr(vglArr[3], or);
+	cpyArrOfStr(vglArr[3], or );
 	cpyArrOfStr(vglArr[4], ge);
 	cpyArrOfStr(vglArr[5], gn);
 	cpyArrOfStr(vglArr[6], bl);
@@ -226,9 +258,9 @@ void fuelleVglArr(char vglArr[][VARIANTEN][20])
 }
 
 /*
-	Diese Funktion kopiert eine Menge von #define VARIANTEN Strings
-	aus einem Array of String (Array of Array of char) genannt source
-	in ein Zielarray (Array of String). 
+Diese Funktion kopiert eine Menge von #define VARIANTEN Strings
+aus einem Array of String (Array of Array of char) genannt source
+in ein Zielarray (Array of String).
 */
 void cpyArrOfStr(char dest[][20], char source[][20])
 {
@@ -240,17 +272,17 @@ void cpyArrOfStr(char dest[][20], char source[][20])
 }
 
 /*
-	Diese Funktion überprüft die Eingabe auf ihre Gültigkeit
-	und gibt bei Falscheingaben in Abhängigkeit vom Fehler
-	einen int-Wert zurück.
-	Erfüllt eine Eingabe alle Anforderungen - enthält jedoch
-	nicht definierte Worte wird dies an anderer Stelle bearbeitet.
+Diese Funktion überprüft die Eingabe auf ihre Gültigkeit
+und gibt bei Falscheingaben in Abhängigkeit vom Fehler
+einen int-Wert zurück.
+Erfüllt eine Eingabe alle Anforderungen - enthält jedoch
+nicht definierte Worte wird dies an anderer Stelle bearbeitet.
 
-	Rückgabewerte:
-	 0: input IO
-	-1: kritischer Fehler
-	 1: zu wenige Worte (Trennzeichen)
-	 2: zu viele Worte (Trennzeichen)
+Rückgabewerte:
+0: input IO
+-1: kritischer Fehler
+1: zu wenige Worte (Trennzeichen)
+2: zu viele Worte (Trennzeichen)
 
 */
 int inputPruefen(char * input)
@@ -269,18 +301,18 @@ int inputPruefen(char * input)
 		k = 0;
 		i++;
 	}
-	if (l < wortmenge-1)	//n(trennz.) = wortmenge -1
+	if (l < wortmenge - 1)	//n(trennz.) = wortmenge -1
 		return 1;
-	if (l > wortmenge-1)
+	if (l > wortmenge - 1)
 		return 2;
-	
+
 	i = k = l = 0;
 	while (*(input + i) != '\0')	//Den String entlang iterieren
 	{
 		while (*(trennz + k) != '\0')	//Die Trennzerichen durchprobieren für zeichen i
 		{
 			if (*(input + i) == *(trennz + k))
-				while (*(trennz + l) != '\0')	
+				while (*(trennz + l) != '\0')
 				{
 					if (*(trennz + l) == *(input + i + 1) || *(input + i + 1) == '\0')
 						return 3;
@@ -288,23 +320,23 @@ int inputPruefen(char * input)
 				}
 			l = 0;
 			k++;
-			
+
 		}
 		k = 0;
 		i++;
 	}
-	
+
 	return 0;
 }
 
 /*
-	Diese Funktion verwaltet und erzeugt die Ausgaben an den Benutzer
-	inklusieve der Fehlerbeschreibung bei falschen Eingaben
-	*****
-	dependency: int farbringe2Ziffer(char *farbwort);
-				double farbring2Multi(char *farbwort);
-				double farbring2Tolleranz(char *farbwort);
-	*****
+Diese Funktion verwaltet und erzeugt die Ausgaben an den Benutzer
+inklusieve der Fehlerbeschreibung bei falschen Eingaben
+*****
+dependency: int farbringe2Ziffer(char *farbwort);
+double farbring2Multi(char *farbwort);
+double farbring2Tolleranz(char *farbwort);
+*****
 */
 int ausgabe(char worte[][WORTLEN], int pruefung)
 {
@@ -319,7 +351,7 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		einer = farbringe2Ziffer(worte[1]);
 		mul = farbring2Multi(worte[2]);
 		tol = farbring2Tolleranz(worte[3]);
-		printf("---|  %s  %s  %s    %s      |---\n", worte [0], worte[1], worte[2], worte[3]);
+		printf("---|  %s  %s  %s    %s      |---\n", worte[0], worte[1], worte[2], worte[3]);
 		if (zehner > -1 && einer > -1 && mul > -1 && tol > -1)
 		{
 			r = (zehner * 10 + einer)*mul;
@@ -328,21 +360,21 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 				r = r / 1000;
 				exp++;
 			}
-			printf("Ein Widerstand mit %.1f %cOhm", r, *(expChar+exp));
+			printf("Ein Widerstand mit %.1f %cOhm", r, *(expChar + exp));
 			printf(" +/- %.f %%\n\n", tol);
 		}
 		else
 		{
 			if (zehner < 0)
-				printf("%s ist nicht als moegliche Farbe definiert!\n", worte [0]);
+				printf("%s ist nicht als moegliche Farbe definiert!\n", worte[0]);
 			else if (einer < 0)
 				printf("%s ist nicht als moegliche Farbe definiert!\n", worte[1]);
 			else if (mul < 0)
 			{
 				if (mul == -1)
-					printf("%s ist an dieser Stelle nicht zulässig",worte[2]);
+					printf("%s ist an dieser Stelle nicht zulässig", worte[2]);
 				else if (mul == -2)
-					printf ("%s ist nicht als moegliche Farbe definiert!\n", worte[2]);
+					printf("%s ist nicht als moegliche Farbe definiert!\n", worte[2]);
 			}
 			else if (tol < 0)
 			{
@@ -364,7 +396,7 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 	case 3:
 		printf("Die Eingabe enthaelt zu wenige Farbringe (ausreichend Trennzeichen)");
 		break;
-	default:	
+	default:
 		printf("schwerer Eingabefehler\n");
 	}
 }
