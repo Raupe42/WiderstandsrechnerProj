@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Project1"
+    "\\Project1",
+    "\\Project1\\Project1",
+    "\\Project1\\TestAufteilen"
   ],
+  "SelectedNode": "\\Project1\\TestAufteilen\\widRech_auteilenTest.c",
   "PreviewInSolutionExplorer": false
 }

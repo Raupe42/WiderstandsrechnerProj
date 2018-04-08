@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Project1\widRech_auteilenTest.c">
+    <ClCompile Include="widRech_auteilenTest.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

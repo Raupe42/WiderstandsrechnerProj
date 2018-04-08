@@ -1,0 +1,4 @@
+﻿  TestFarbringe2Ziffer.c
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\testfarbringe2ziffer\testfarbringe2ziffer.c(47): warning C4013: "farbringe2Ziffer" undefiniert; Annahme: extern mit Rückgabetyp int
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\testfarbringe2ziffer\testfarbringe2ziffer.c(39): warning C4101: "worte": Unreferenzierte lokale Variable
+  TestFarbringe2Ziffer.vcxproj -> C:\Users\jensh\OneDrive\Dokumente\Git\WiderstandsrechnerProj\Project1\Debug\TestFarbringe2Ziffer.exe

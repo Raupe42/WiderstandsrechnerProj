@@ -40,6 +40,7 @@ int main(void)
 		for (j = 0; j < 4; j++)
 			printf("worte[%i]: %s\n", j, worte[j]);
 	}
+	getchar();
 }
 
 /*******************************************

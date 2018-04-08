@@ -28,6 +28,7 @@ Die zusätzlichen Features gegenüber der Grundversion sind:
 	ß : \xE1
 	von: http://www.c-programmieren.com/C-Lernen.html#Umlaute
 - Angabe des Widerstandstyps (Kohle oder Metallschicht)
+- Anzeige der möglichen schreibweisen je Wort
 
 
 */

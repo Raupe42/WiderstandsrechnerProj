@@ -1,4 +1,3 @@
 ﻿  widRech_auteilenTest.c
-c:\users\jensh\onedrive\dokumente\gitsurface\widerstandsrechnerproj\project1\project1\widrech_auteilentest.c(39): warning C4013: "aufteilen" undefiniert; Annahme: extern mit Rückgabetyp int
-  LINK : C:\Users\jensh\OneDrive\Dokumente\GitSurface\WiderstandsrechnerProj\Project1\Debug\TestAufteilen.exe wurde nicht gefunden oder beim letzten inkrementellen Linkvorgang nicht erstellt; vollständiger Link wird durchgeführt.
-  TestAufteilen.vcxproj -> C:\Users\jensh\OneDrive\Dokumente\GitSurface\WiderstandsrechnerProj\Project1\Debug\TestAufteilen.exe
+c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\testaufteilen\widrech_auteilentest.c(39): warning C4013: "aufteilen" undefiniert; Annahme: extern mit Rückgabetyp int
+  TestAufteilen.vcxproj -> C:\Users\jensh\OneDrive\Dokumente\Git\WiderstandsrechnerProj\Project1\Debug\TestAufteilen.exe
