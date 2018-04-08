@@ -81,7 +81,7 @@ void cpyArrOfStr(char dest[][20], char source[][20]);
 int inputPruefen(char * input);
 int ausgabe(char worte[][WORTLEN], int pruefung);
 
-char * eingabe(char * inputStr[]);
+char * eingabe(char inputStr[]);
 void hilfeAnzeigen();
 void farbenAnzeigen();
 //End Proto
@@ -138,7 +138,7 @@ Die Eingabe wird als InPlaceSubstitutuion zurück gegeben
 mit gleichzeitig der Adresse davon als Rückgabewert
 */
 
-char * eingabe(char * inputStr[])
+char * eingabe(char inputStr[])
 {
 	//lokale Datenfelder
 	int i;
@@ -271,9 +271,9 @@ int farbring2TK(char *farbwort)
 {
 	int TkArr[12] = { 200, 100, 50, 15, 25, 5, -1, -1, -1, -1, -1, 10 };
 	int retVal = farbringe2Ziffer(farbwort);
-	if (retVal != -1.0)
+	if (retVal != -1)
 		return TkArr[retVal];
-	return -2.0;
+	return -2;
 }
 
 /*
@@ -462,14 +462,18 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 				exp++;
 			}
 			
-			printf("Ein %swiderstand mit %.3f %cOhm",rArt, r, *(expChar + exp));
+			printf("Ein %swiderstand mit %g %cOhm",rArt, r, *(expChar + exp));
 			printf(" +/- %.f%%", tol);
 			if (tempKoef > 0)
 			{
 				printf(" TK +/-%ippm /K", tempKoef);
 			}
 			printf("\n\n");
-			printf("Der Widerstandswert liegt also zwischen %.4f %cOhm und %.4f %cOhm +/-%ippm /K.\n",  r* (1 - tol * 0.01), *(expChar + exp), r * (1+tol * 0.01), *(expChar + exp), tempKoef);
+			printf("Der Widerstandswert liegt also zwischen %g %cOhm und %g %cOhm",  r* (1 - tol * 0.01), *(expChar + exp), r * (1+tol * 0.01), *(expChar + exp));
+			if (tempKoef > 0)
+				printf(" +/-%ippm /K.\n", tempKoef);
+			else
+				printf("\n");
 			
 		}
 		else		//mindestens ein eingegebenes Wort konnte nicht zugeordnet werden
@@ -509,6 +513,7 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 	default:
 		printf("schwerer Eingabefehler\n");
 	}
+	return 0;
 }
 
 

@@ -1,11 +1,2 @@
 ﻿  WiderstandsrechnerVollversion.c
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(101): warning C4047: "Funktion": Anzahl der Dereferenzierungen bei "char **" und "char [100]" unterschiedlich
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(101): warning C4024: "eingabe": unterschiedliche Typen für formalen und übergebenen Parameter 1
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(165): warning C4047: "Funktion": Anzahl der Dereferenzierungen bei "int" und "char *" unterschiedlich
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(165): warning C4024: "tolower": unterschiedliche Typen für formalen und übergebenen Parameter 1
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(165): warning C4047: "=": Anzahl der Dereferenzierungen bei "char *" und "int" unterschiedlich
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(167): warning C4047: "return": Anzahl der Dereferenzierungen bei "char *" und "char **" unterschiedlich
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(162): warning C4477: "scanf": Die Formatzeichenfolge "%99[^\n]" erfordert ein Argument vom Typ "char *", das variadic-Argument "1" weist aber den Typ "char **" auf.
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(275): warning C4244: "return": Konvertierung von "double" in "int", möglicher Datenverlust
-c:\users\jensh\onedrive\dokumente\git\widerstandsrechnerproj\project1\widerstandsrechnervollversion\widerstandsrechnervollversion.c(511): warning C4716: "ausgabe": Muss einen Wert zurückgeben
   WiderstandsrechnerVollversion.vcxproj -> C:\Users\jensh\OneDrive\Dokumente\Git\WiderstandsrechnerProj\Project1\Debug\WiderstandsrechnerVollversion.exe
