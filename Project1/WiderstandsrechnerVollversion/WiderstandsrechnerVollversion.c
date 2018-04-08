@@ -454,7 +454,6 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		//Bei gültiger Eingabe Wert berechnen
 		if (ring1 > -1 && ring2 > -1 && ring3 > -1 && mul > -1 && tol > -1 && tempKoef > -1)
 		{
-			//r = (ring1 * 10 + ring2)*mul;
 			while (r >= 1000)
 			{
 				r = r / 1000;
@@ -481,6 +480,8 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 				printf("%s ist nicht als m\x94gliche Farbe definiert!\n", worte[0]);
 			else if (ring2 < 0)
 				printf("%s ist nicht als m\x94gliche Farbe definiert!\n", worte[1]);
+			else if (ring3 < 0)
+				printf("%s ist nicht als m\x94gliche Farbe definiert!\n", worte[2]);
 			else if (mul < 0)
 			{
 				if (mul == -1)
@@ -512,8 +513,9 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 	default:
 		printf("schwerer Eingabefehler\n");
 	}
-	return 0;
 	setlocale(LC_NUMERIC, "C");		//zurück zum ANSI-C Standard
+	return 0;
+	
 }
 
 
