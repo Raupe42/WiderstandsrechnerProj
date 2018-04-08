@@ -95,8 +95,9 @@ int main(void)
 	char worte[6][WORTLEN];
 	//End lokale Datenfelder
 
-	//setlocale(LC_ALL, "");		//Funktioniert nicht, die Eingabe wird falsch eingelesen
-	//setlocale(LC_NUMERIC, "");	//mit jeweils zwei '\0' zwischen jedem Buchstaben
+	setlocale(LC_NUMERIC, "C");		//für 8Bit Chars
+									//mit "" können Probleme enstehen -> nur Bei Ausgabe verwenden
+
 	while (strcmp(inputStr, "-quit") != 0 && strcmp(inputStr, "-q") != 0)
 	{
 		eingabe(inputStr);
@@ -106,8 +107,6 @@ int main(void)
 				hilfeAnzeigen();
 			else if (strcmp(inputStr, "-1") == 0)
 				farbenAnzeigen();
-			/*else if (strcmp(inputStr, "-x") == 0)
-				erweiterteAnzeige();*/
 			else	//Normaler Programmaufruf
 			{
 				//Aufruf der Subroutinen
@@ -119,7 +118,7 @@ int main(void)
 				ausgabe(worte, pruef);
 
 
-				printf("Eingabetaste druecken\n");
+				printf("Eingabetaste dr""\x81""cken\n");
 				scanf("%" str(MAXINPUT) "[^\n]", inputStr);
 				while (getchar() != '\n');
 
@@ -461,7 +460,7 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 				r = r / 1000;
 				exp++;
 			}
-			
+			setlocale(LC_NUMERIC, "");	// Systemsprache
 			printf("Ein %swiderstand mit %g %cOhm",rArt, r, *(expChar + exp));
 			printf(" +/- %.f%%", tol);
 			if (tempKoef > 0)
@@ -514,6 +513,7 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 		printf("schwerer Eingabefehler\n");
 	}
 	return 0;
+	setlocale(LC_NUMERIC, "C");		//zurück zum ANSI-C Standard
 }
 
 
