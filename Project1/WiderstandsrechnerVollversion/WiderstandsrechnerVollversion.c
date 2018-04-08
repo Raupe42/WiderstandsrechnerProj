@@ -26,6 +26,7 @@ Die zusätzlichen Features gegenüber der Grundversion sind:
 	Ö : \x99
 	Ü : \x9A
 	ß : \xE1
+	± : \xF1
 	von: http://www.c-programmieren.com/C-Lernen.html#Umlaute
 - Angabe des Widerstandstyps (Kohle oder Metallschicht)
 - Anzeige der möglichen schreibweisen je Wort
@@ -461,15 +462,16 @@ int ausgabe(char worte[][WORTLEN], int pruefung)
 			}
 			setlocale(LC_NUMERIC, "");	// Systemsprache
 			printf("Ein %swiderstand mit %g %cOhm",rArt, r, *(expChar + exp));
-			printf(" +/- %.f%%", tol);
+			//printf(" +/- %.f%%", tol);
+			printf(" \xF1 %.f%%", tol);
 			if (tempKoef > 0)
 			{
-				printf(" TK +/-%ippm /K", tempKoef);
+				printf(" TK \xF1%ippm /K", tempKoef);
 			}
 			printf("\n\n");
 			printf("Der Widerstandswert liegt also zwischen %g %cOhm und %g %cOhm",  r* (1 - tol * 0.01), *(expChar + exp), r * (1+tol * 0.01), *(expChar + exp));
 			if (tempKoef > 0)
-				printf(" +/-%ippm /K.\n", tempKoef);
+				printf(" \xF1%ippm /K.\n", tempKoef);
 			else
 				printf("\n");
 			
