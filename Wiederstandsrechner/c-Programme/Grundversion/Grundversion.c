@@ -1,7 +1,9 @@
 /*
 author: Tim, Jens
+
 Task: Erfüllung des Pflichtenhefts gemäß der Dokumentation.
 Dieses Programm stellt das Prdukt als vereinbarte Grundversion dar.
+
 */
 
 // Defines
@@ -243,11 +245,13 @@ void cpyArrOfStr(char dest[][20], char source[][20])
 	einen int-Wert zurück.
 	Erfüllt eine Eingabe alle Anforderungen - enthält jedoch
 	nicht definierte Worte wird dies an anderer Stelle bearbeitet.
+
 	Rückgabewerte:
 	 0: input IO
 	-1: kritischer Fehler
 	 1: zu wenige Worte (Trennzeichen)
 	 2: zu viele Worte (Trennzeichen)
+
 */
 int inputPruefen(char * input)
 {

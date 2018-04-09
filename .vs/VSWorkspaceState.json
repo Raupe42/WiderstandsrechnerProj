@@ -1,10 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Project1",
-    "\\Project1\\Project1",
-    "\\Project1\\TestAufteilen"
+    "\\Wiederstandsrechner",
+    "\\Wiederstandsrechner\\src",
+    "\\Wiederstandsrechner\\src\\Project1"
   ],
-  "SelectedNode": "\\Project1\\TestAufteilen\\widRech_auteilenTest.c",
+  "SelectedNode": "\\Wiederstandsrechner\\src\\Project1\\TestFarbringe2Ziffer",
   "PreviewInSolutionExplorer": false
 }
