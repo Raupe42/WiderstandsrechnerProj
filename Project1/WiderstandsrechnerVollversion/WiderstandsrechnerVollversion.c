@@ -30,7 +30,8 @@ Die zusätzlichen Features gegenüber der Grundversion sind:
 	von: http://www.c-programmieren.com/C-Lernen.html#Umlaute
 - Angabe des Widerstandstyps (Kohle oder Metallschicht)
 - Anzeige der möglichen schreibweisen je Wort
-
+- Hilfe-Funktion
+- Angabe mit ±
 
 */
 
@@ -552,6 +553,9 @@ void hilfeAnzeigen()
 /*
 	Diese Funktion gibt auf der Basis des vglArr die möglichen
 	Eingaben des Benutzer an
+	*****
+	dependency: void fuelleVglArr(char vglArr[][VARIANTEN][20]);
+	*****
 */
 void farbenAnzeigen()
 {

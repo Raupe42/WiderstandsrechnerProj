@@ -63,7 +63,7 @@ int main(void)
 
 /*******************************************
 Zu testende Funktion
-es ewrden nur kleingeschriebene Eingabe erwartet,
+es werden nur kleingeschriebene Eingabe erwartet,
 da das tolower() Setzen aller Chars im Programm bereits nach
 der Eingabe erfolgt ist.
 *******************************************/
